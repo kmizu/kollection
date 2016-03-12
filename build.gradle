@@ -1,0 +1,108 @@
+buildscript {
+  ext.kotlin_version = '1.0.0'
+  ext.dokka_version = "0.9.7"
+  repositories {
+    mavenCentral()
+    jcenter()
+  }
+  dependencies {
+    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    classpath "org.jetbrains.dokka:dokka-gradle-plugin:$dokka_version"
+  }
+}
+
+apply plugin: "org.jetbrains.dokka"
+apply plugin: 'kotlin'
+
+project(":") {
+  apply plugin: "application"
+  apply plugin: "idea"
+  apply plugin: 'maven'
+  apply plugin: 'signing'
+  mainClassName = "com.github.kmizu.kollection.example.MainKt"
+  group = "com.github.kmizu"
+  version = "0.1-SNAPSHOT"
+  repositories {
+    mavenCentral()
+      maven {
+        url "http://oss.sonatype.org/content/repositories/snapshots"
+      }
+  }
+  dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+  }
+}
+
+task dokkaJavadoc(type: org.jetbrains.dokka.gradle.DokkaTask) {
+  outputFormat = 'html'
+  outputDirectory = "$buildDir/javadoc"
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+  classifier = 'sources'
+  from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar, dependsOn: dokkaJavadoc) {
+  classifier = 'javadoc'
+  from dokkaJavadoc.outputDirectory
+}
+
+artifacts {
+  archives sourcesJar
+  archives javadocJar
+}
+
+task wrapper(type: Wrapper) {
+  gradleVersion = '2.11'
+}
+
+uploadArchives {
+  repositories {
+    mavenDeployer {
+      beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+      repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+        authentication(userName: rootProject.ossrhUsername, password: rootProject.ossrhPassword)
+      }
+
+      snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+        authentication(userName: rootProject.ossrhUsername, password: rootProject.ossrhPassword)
+      }
+
+      pom.project {
+        name 'kollection'
+        packaging 'jar'
+        description "A parser combinator library written in Kotlin"
+        licenses {
+          license {
+            name "The MIT License"
+              url "http://www.opensource.org/licenses/MIT"
+          }
+        }
+        url "https://github.com/kmizu/kollection"
+        scm {
+          url "git@github.com:kmizu/kollection.git"
+          connection "scm:git:git@github.com:kmizu/kollection.git"
+        }
+        developers {
+          developer {
+            name "Kota Mizushima"
+            url "https://github.com/kmizu"
+            email "mizukota@gmail.com"
+          }
+        }
+      }
+    }
+  }
+}
+repositories {
+  mavenCentral()
+}
+dependencies {
+  compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+}
+sourceSets {
+  main.java.srcDirs += 'src/main/kotlin'
+}
+
