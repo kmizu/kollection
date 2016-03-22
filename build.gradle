@@ -3,15 +3,16 @@ buildscript {
   ext.dokka_version = "0.9.7"
   ext.spek_version = "0.1.195"
   repositories {
+    mavenCentral()
+    jcenter()
     maven {
       url "http://repository.jetbrains.com/all"
     }
-    mavenCentral()
-    jcenter()
   }
   dependencies {
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     classpath "org.jetbrains.dokka:dokka-gradle-plugin:$dokka_version"
+    classpath "org.jetbrains.spek:spek:$version"
   }
 }
 
@@ -28,9 +29,12 @@ project(":") {
   version = "0.1-SNAPSHOT"
   repositories {
     mavenCentral()
-      maven {
-        url "http://oss.sonatype.org/content/repositories/snapshots"
-      }
+    maven {
+      url "http://oss.sonatype.org/content/repositories/snapshots"
+    }
+    maven {
+      url "http://repository.jetbrains.com/all"
+    }
   }
   dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
