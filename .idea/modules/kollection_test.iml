@@ -10,9 +10,9 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="kollection_main" />
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.0.0" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-runtime:1.0.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.spek:spek:0.1-SNAPSHOT" level="project" />
   </component>
   <component name="TestModuleProperties" production-module="kollection_main" />
 </module>
