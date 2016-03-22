@@ -1,7 +1,11 @@
 buildscript {
   ext.kotlin_version = '1.0.0'
   ext.dokka_version = "0.9.7"
+  ext.spek_version = "0.1.195"
   repositories {
+    maven {
+      url "http://repository.jetbrains.com/all"
+    }
     mavenCentral()
     jcenter()
   }
@@ -30,6 +34,7 @@ project(":") {
   }
   dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    testCompile "org.jetbrains.kotlin:kotlin-stdlib:$spek_version"
   }
 }
 
