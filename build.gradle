@@ -12,7 +12,6 @@ buildscript {
   dependencies {
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     classpath "org.jetbrains.dokka:dokka-gradle-plugin:$dokka_version"
-    classpath "org.jetbrains.spek:spek:$version"
   }
 }
 
@@ -38,7 +37,7 @@ project(":") {
   }
   dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    testCompile "org.jetbrains.spek:spek:$version"
+    testCompile "org.jetbrains.spek:spek:$spek_version"
   }
 }
 
