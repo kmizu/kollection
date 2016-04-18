@@ -23,6 +23,20 @@ sealed class KList<out T:Any>() {
         }
         return loop(KNil, this)
     }
+    fun <U:Any> foldLeft(z: U, function: (U, T) -> U): U {
+        tailrec fun loop(list: KList<T>, accumulator: U): U = when(list) {
+            is KCons<T> -> loop(list.tail, function(accumulator, list.head))
+            is KNil -> accumulator
+        }
+        return loop(this, z)
+    }
+    fun <U:Any> map(function: (T) -> U): KList<U> {
+        tailrec fun loop(list: KList<T>, result: KList<U>): KList<U> = when(list) {
+            is KCons<T> -> loop(list.tail, function(list.head) prepend result)
+            is KNil -> result
+        }
+        return loop(this, KNil).reverse()
+    }
 }
 
 

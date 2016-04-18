@@ -14,7 +14,13 @@ class KListSpec(): Spek() {
                     assertEquals(klist, 1 prepend (2 prepend (3 prepend (4 prepend (5 prepend KNil)))))
                 }
                 it("reverse()") {
-                    assertEquals(klist.reverse(), klistOf(5, 4, 3, 2, 1))
+                    assertEquals(klistOf(5, 4, 3, 2, 1), klist.reverse())
+                }
+                it("foldLeft()") {
+                    assertEquals(15, klist.foldLeft(0){l, r -> l + r})
+                }
+                it("map()") {
+                    assertEquals(klistOf(2, 3, 4, 5, 6), klist.map {it + 1})
                 }
             }
         }
