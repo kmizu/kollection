@@ -71,13 +71,13 @@ uploadArchives {
       beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
 
       repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-        if(rootProject?.ossrhUsername != null && rootProject?.ossrhPassword != null) {
+        if(rootProject.hasProperty('ossrhUsername')  && rootProject.hasProperty('ossrhPassword')) {
           authentication(userName: rootProject.ossrhUsername, password: rootProject.ossrhPassword)
         }
       }
 
       snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-        if(rootProject?.ossrhUsername != null && rootProject?.ossrhPassword != null) {
+        if(rootProject.hasProperty('ossrhUsername')  && rootProject.hasProperty('ossrhPassword')) {
           authentication(userName: rootProject.ossrhUsername, password: rootProject.ossrhPassword)
         }
       }
