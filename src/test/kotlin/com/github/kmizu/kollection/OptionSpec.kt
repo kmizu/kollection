@@ -8,27 +8,53 @@ import kotlin.test.assertFailsWith
 class OptionSpec(): Spek() {
     init {
         given("An Option") {
-            on("with a String FOO") {
+            on("which is a Some(\"FOO\")") {
                 val x: Option<String> = Some("FOO")
-                assertEquals(x.get(), "FOO")
-                assertEquals(x.filter{true}, Some("FOO"))
-                assertEquals(x.filter{false}, None)
-                assertEquals(x.map{it + "BAR"}, Some("FOOBAR"))
-                assertEquals(x.flatMap{Some("BAR")}, Some("BAR"))
-                assertEquals(x.foldLeft("BAR"){a, r -> r + a}, "FOOBAR")
-                assertEquals(x.foldRight("BAR"){l, a -> l + a}, "FOOBAR")
-            }
-            on("with None") {
-                val x: Option<String> = None
-                assertFailsWith(IllegalArgumentException::class) {
-                    x.get()
+                it("get()") {
+                    assertEquals(x.get(), "FOO")
                 }
-                assertEquals(x.filter{true}, None)
-                assertEquals(x.map{it.toString()}, None)
-                assertEquals(x.flatMap{Some(it.toString())}, None)
-                assertEquals(x.isEmpty(), true)
-                assertEquals(x.foldLeft("EMPTY"){x, y -> x + y}, "EMPTY")
-                assertEquals(x.foldRight("EMPTY"){x, y -> x + y}, "EMPTY")
+                it("filter()") {
+                    assertEquals(x.filter{true}, Some("FOO"))
+                    assertEquals(x.filter{false}, None)
+                }
+                it("map()"){
+                    assertEquals(x.map{it + "BAR"}, Some("FOOBAR"))
+                }
+                it("flatMap()"){
+                    assertEquals(x.flatMap{Some("BAR")}, Some("BAR"))
+                }
+                it("foldLeft()") {
+                    assertEquals(x.foldLeft("BAR"){a, r -> r + a}, "FOOBAR")
+                }
+                it("foldRight()") {
+                    assertEquals(x.foldRight("BAR"){l, a -> l + a}, "FOOBAR")
+                }
+            }
+            on("which is None") {
+                val x: Option<String> = None
+                it("get()") {
+                    assertFailsWith(IllegalArgumentException::class) {
+                        x.get()
+                    }
+                }
+                it("filter()") {
+                    assertEquals(x.filter{true}, None)
+                }
+                it("map()") {
+                    assertEquals(x.map{it.toString()}, None)
+                }
+                it("flatMap()"){
+                    assertEquals(x.flatMap{Some(it.toString())}, None)
+                }
+                it("isEmpty()") {
+                    assertEquals(x.isEmpty(), true)
+                }
+                it("foldLeft()") {
+                    assertEquals(x.foldLeft("EMPTY"){x, y -> x + y}, "EMPTY")
+                }
+                it("foldRight") {
+                    assertEquals(x.foldRight("EMPTY"){x, y -> x + y}, "EMPTY")
+                }
             }
         }
     }
