@@ -15,9 +15,11 @@ class OptionSpec(): Spek() {
                 assertEquals(x.filter{false}, None)
                 assertEquals(x.map{it + "BAR"}, Some("FOOBAR"))
                 assertEquals(x.flatMap{Some("BAR")}, Some("BAR"))
+                assertEquals(x.foldLeft("BAR"){a, r -> r + a}, "FOOBAR")
+                assertEquals(x.foldRight("BAR"){l, a -> l + a}, "FOOBAR")
             }
             on("with None") {
-                val x: Option<Any> = None
+                val x: Option<String> = None
                 assertFailsWith(IllegalArgumentException::class) {
                     x.get()
                 }
@@ -25,6 +27,8 @@ class OptionSpec(): Spek() {
                 assertEquals(x.map{it.toString()}, None)
                 assertEquals(x.flatMap{Some(it.toString())}, None)
                 assertEquals(x.isEmpty(), true)
+                assertEquals(x.foldLeft("EMPTY"){x, y -> x + y}, "EMPTY")
+                assertEquals(x.foldRight("EMPTY"){x, y -> x + y}, "EMPTY")
             }
         }
     }

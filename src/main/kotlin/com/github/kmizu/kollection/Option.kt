@@ -21,6 +21,16 @@ sealed class Option<out T:Any>() {
         is None -> throw IllegalArgumentException("None")
     }
 
+    fun <U:Any> foldLeft(z: U, function: (U, T) -> U): U = when(this) {
+        is Some<T> -> function(z, this.value)
+        is None -> z
+    }
+
+    fun <U:Any> foldRight(z: U, function: (T, U) -> U): U = when(this) {
+        is Some<T> -> function(this.value, z)
+        is None -> z
+    }
+
     fun <U:Any> map(function: (T) -> U): Option<U> = when(this) {
         is Some<T> -> Some(function(this.value))
         is None -> None
