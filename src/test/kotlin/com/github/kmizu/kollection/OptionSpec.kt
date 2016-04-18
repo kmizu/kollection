@@ -24,6 +24,7 @@ class OptionSpec(): Spek() {
                 assertEquals(x.filter{true}, None)
                 assertEquals(x.map{it.toString()}, None)
                 assertEquals(x.flatMap{Some(it.toString())}, None)
+                assertEquals(x.isEmpty(), true)
             }
         }
     }

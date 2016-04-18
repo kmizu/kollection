@@ -36,6 +36,11 @@ sealed class Option<out T:Any>() {
         is None -> None
     }
 
+    fun isEmpty(): Boolean = when(this) {
+        is Some<T> -> false
+        is None -> true
+    }
+
     override fun toString(): String = when(this){
         is Some<*> -> "Some(${value})"
         is None -> "None"
