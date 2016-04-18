@@ -1,14 +1,14 @@
 package com.github.kmizu.kollection
 
-sealed class Option<out T:Any>() {
-    class Some<T:Any>(val value: T) : Option<T>() {
+sealed class KOption<out T:Any>() {
+    class Some<T:Any>(val value: T) : KOption<T>() {
         override fun equals(other: Any?): Boolean = when(other){
             is Some<*> -> value == other.value
             else -> false
         }
         override fun hashCode(): Int = value.hashCode()
     }
-    object None : Option<Nothing>() {
+    object None : KOption<Nothing>() {
         override fun equals(other: Any?): Boolean = super.equals(other)
     }
 
@@ -31,17 +31,17 @@ sealed class Option<out T:Any>() {
         is None -> z
     }
 
-    fun <U:Any> map(function: (T) -> U): Option<U> = when(this) {
+    fun <U:Any> map(function: (T) -> U): KOption<U> = when(this) {
         is Some<T> -> Some(function(this.value))
         is None -> None
     }
 
-    fun <U:Any> flatMap(function: (T) -> Option<U>): Option<U> = when(this) {
+    fun <U:Any> flatMap(function: (T) -> KOption<U>): KOption<U> = when(this) {
         is Some<T> -> function(this.value)
         is None -> None
     }
 
-    fun filter(function: (T) -> Boolean): Option<T> = when(this) {
+    fun filter(function: (T) -> Boolean): KOption<T> = when(this) {
         is Some<T> -> if(function(this.value)) this else None
         is None -> None
     }

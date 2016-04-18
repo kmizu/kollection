@@ -2,14 +2,14 @@ package com.github.kmizu.kollection
 import org.jetbrains.spek.api.Spek
 import org.junit.Test
 import kotlin.test.assertEquals
-import com.github.kmizu.kollection.Option.*
+import com.github.kmizu.kollection.KOption.*
 import kotlin.test.assertFailsWith
 
 class OptionSpec(): Spek() {
     init {
         given("An Option") {
             on("which is a Some(\"FOO\")") {
-                val x: Option<String> = Some("FOO")
+                val x: KOption<String> = Some("FOO")
                 it("get()") {
                     assertEquals(x.get(), "FOO")
                 }
@@ -31,7 +31,7 @@ class OptionSpec(): Spek() {
                 }
             }
             on("which is None") {
-                val x: Option<String> = None
+                val x: KOption<String> = None
                 it("get()") {
                     assertFailsWith(IllegalArgumentException::class) {
                         x.get()
