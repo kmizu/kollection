@@ -1,8 +1,6 @@
 package com.github.kmizu.kollection
-import com.github.kmizu.kollection.KList.KCons
-import com.github.kmizu.kollection.KList.KNil
 
-sealed class KList<out T:Any> {
+sealed class KList<out T:Any>() {
     class KCons<out T:Any>(val head: T, val tail: KList<T>) : KList<T>() {
         override fun equals(other: Any?): Boolean = when (other) {
             is KCons<*> -> this.head == other.head && this.tail == other.tail
@@ -27,12 +25,4 @@ sealed class KList<out T:Any> {
     }
 }
 
-infix fun <T:Any> T.prepend(other: KList<T>): KList<T> = KCons(this, other)
 
-fun <T:Any> klistOf(vararg elements: T): KList<T> {
-    var result: KList<T> = KNil
-    for(e in elements.reversed()) {
-        result = e.prepend(result)
-    }
-    return result
-}
