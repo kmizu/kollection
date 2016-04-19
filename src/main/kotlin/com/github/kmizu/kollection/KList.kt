@@ -6,7 +6,7 @@ sealed class KList<out T>() {
         fun <T:Any> make(vararg elements: T): KList<T> = block{
             var result: KList<T> = KNil
             for(e in elements.reversed()) {
-                result = e.prepend(result)
+                result = e.cons(result)
             }
             result
         }
@@ -37,7 +37,7 @@ sealed class KList<out T>() {
     fun reverse(): KList<T> = block {
         tailrec fun loop(accumlator: KList<T>, rest: KList<T>): KList<T> = when(rest) {
             is KNil -> accumlator
-            is KCons<T> -> loop(rest.head.prepend(accumlator), rest.tail)
+            is KCons<T> -> loop(rest.head.cons(accumlator), rest.tail)
         }
         loop(KNil, this)
     }
@@ -57,7 +57,7 @@ sealed class KList<out T>() {
     }
     fun <U:Any> map(function: (T) -> U): KList<U>  = block {
         tailrec fun loop(list: KList<T>, result: KList<U>): KList<U> = when(list) {
-            is KCons<T> -> loop(list.tail, function(list.head) prepend result)
+            is KCons<T> -> loop(list.tail, function(list.head) cons result)
             is KNil -> result
         }
         loop(this, KNil).reverse()
@@ -69,7 +69,7 @@ sealed class KList<out T>() {
             var rest2: KList<U> = function(rest.hd())
             rest = rest.tl()
             while(rest2 != KNil) {
-                result = rest2.hd() prepend result
+                result = rest2.hd() cons result
                 rest2 = rest2.tl()
             }
         }
