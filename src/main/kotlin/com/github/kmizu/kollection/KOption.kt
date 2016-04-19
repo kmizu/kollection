@@ -2,7 +2,7 @@ package com.github.kmizu.kollection
 
 import com.github.kmizu.kollection.kontrol.block
 
-sealed class KOption<out T>() {
+sealed class KOption<out T>(): Iterable<T> {
     class Some<T>(val value: T) : KOption<T>() {
         override fun equals(other: Any?): Boolean = when(other){
             is Some<*> -> value == other.value
@@ -13,8 +13,6 @@ sealed class KOption<out T>() {
     object None : KOption<Nothing>() {
         override fun equals(other: Any?): Boolean = super.equals(other)
     }
-
-
 
     /**
      * Extract the value from this Option.
@@ -58,5 +56,23 @@ sealed class KOption<out T>() {
     override fun toString(): String = when(this){
         is Some<*> -> "Some(${value})"
         is None -> "None"
+    }
+
+    override fun iterator(): Iterator<T> = object : Iterator<T> {
+        private var value: KOption<T> = this@KOption
+        override fun next(): T = when(value) {
+            is Some<T> ->
+                block {
+                    val result = value.get()
+                    value = None
+                    result
+                }
+            is None -> throw IllegalArgumentException("None")
+        }
+
+        override fun hasNext(): Boolean = when(value){
+            is Some<T> -> true
+            is None -> false
+        }
     }
 }
