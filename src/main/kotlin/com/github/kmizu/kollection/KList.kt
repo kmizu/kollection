@@ -26,6 +26,14 @@ sealed class KList<out T:Any>() {
         }
         override fun toString(): String = "KNil"
     }
+    fun hd(): T = when(this) {
+        is KCons<T> -> this.head
+        is KNil -> throw IllegalArgumentException("KNil")
+    }
+    fun tl(): KList<T> = when(this) {
+        is KCons<T> -> this.tail
+        is KNil -> throw IllegalArgumentException("KNil")
+    }
     fun reverse(): KList<T> = block {
         tailrec fun loop(accumlator: KList<T>, rest: KList<T>): KList<T> = when(rest) {
             is KNil -> accumlator
@@ -53,6 +61,19 @@ sealed class KList<out T:Any>() {
             is KNil -> result
         }
         loop(this, KNil).reverse()
+    }
+    fun <U:Any> flatMap(function: (T) -> KList<U>): KList<U> = block {
+        var result: KList<U> = KNil
+        var rest: KList<T> = this
+        while(rest != KNil) {
+            var rest2: KList<U> = function(rest.hd())
+            rest = rest.tl()
+            while(rest2 != KNil) {
+                result = rest2.hd() prepend result
+                rest2 = rest2.tl()
+            }
+        }
+        result.reverse()
     }
 }
 
