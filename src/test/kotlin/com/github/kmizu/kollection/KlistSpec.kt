@@ -10,8 +10,8 @@ class KListSpec(): Spek() {
         given("A KList") {
             on("which is a KCons") {
                 val klist = klist(1, 2, 3, 4, 5)
-                it("prepend()") {
-                    assertEquals(klist, 1 prepend (2 prepend (3 prepend (4 prepend (5 prepend KNil)))))
+                it("cons()") {
+                    assertEquals(klist, 1 cons (2 cons (3 cons (4 cons (5 cons KNil)))))
                 }
                 it("reverse()") {
                     assertEquals(klist(5, 4, 3, 2, 1), klist.reverse())
@@ -32,6 +32,29 @@ class KListSpec(): Spek() {
                 it("concat") {
                     val list = klist(1, 2, 3)
                     assertEquals(klist(1, 2, 3, 4, 5, 1, 2, 3), klist concat list)
+                }
+            }
+            on("which is KNil") {
+                val knil: KList<Int> = KNil
+                it("reverse()") {
+                    assertEquals(KNil, knil.reverse())
+                }
+                it("foldLeft()") {
+                    assertEquals(0, knil.foldRight(0){x, y -> x + y})
+                }
+                it("foldRight()") {
+                    assertEquals(0, knil.foldRight(0){x, y -> x + y})
+                }
+                it("map()") {
+                    assertEquals(KNil, knil.map {it + 1})
+                }
+                it("flatMap()") {
+                    val list = klist(1, 2, 3)
+                    assertEquals(KNil, knil.flatMap{x -> klist(x, x)})
+                }
+                it("concat") {
+                    val list = klist(1, 2, 3)
+                    assertEquals(KNil, knil concat knil)
                 }
             }
         }
