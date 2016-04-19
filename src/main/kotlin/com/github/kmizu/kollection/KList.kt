@@ -2,6 +2,15 @@ package com.github.kmizu.kollection
 import com.github.kmizu.kollection.kontrol.block
 
 sealed class KList<out T:Any>() {
+    companion object {
+        fun <T:Any> make(vararg elements: T): KList<T> = block{
+            var result: KList<T> = KNil
+            for(e in elements.reversed()) {
+                result = e.prepend(result)
+            }
+            result
+        }
+    }
     class KCons<out T:Any>(val head: T, val tail: KList<T>) : KList<T>() {
         override fun equals(other: Any?): Boolean = when (other) {
             is KCons<*> -> this.head == other.head && this.tail == other.tail
