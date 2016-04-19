@@ -5,7 +5,7 @@ import kotlin.test.assertEquals
 import com.github.kmizu.kollection.KOption.*
 import kotlin.test.assertFailsWith
 
-class OptionSpec(): Spek() {
+class KOptionSpec(): Spek() {
     init {
         given("An Option") {
             on("which is a Some(\"FOO\")") {
@@ -28,6 +28,9 @@ class OptionSpec(): Spek() {
                 }
                 it("foldRight()") {
                     assertEquals(x.foldRight("BAR"){l, a -> l + a}, "FOOBAR")
+                }
+                it("orElse()") {
+                    assertEquals(Some("FOO"), x orElse Some("BAR"))
                 }
             }
             on("which is None") {
@@ -54,6 +57,9 @@ class OptionSpec(): Spek() {
                 }
                 it("foldRight") {
                     assertEquals(x.foldRight("EMPTY"){x, y -> x + y}, "EMPTY")
+                }
+                it("orElse()") {
+                    assertEquals(Some("BAR"), x orElse Some("BAR"))
                 }
             }
         }

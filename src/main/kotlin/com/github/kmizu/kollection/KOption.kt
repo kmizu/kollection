@@ -1,5 +1,7 @@
 package com.github.kmizu.kollection
 
+import com.github.kmizu.kollection.kontrol.block
+
 sealed class KOption<out T:Any>() {
     class Some<T:Any>(val value: T) : KOption<T>() {
         override fun equals(other: Any?): Boolean = when(other){
@@ -11,6 +13,8 @@ sealed class KOption<out T:Any>() {
     object None : KOption<Nothing>() {
         override fun equals(other: Any?): Boolean = super.equals(other)
     }
+
+
 
     /**
      * Extract the value from this Option.

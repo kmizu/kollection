@@ -25,6 +25,14 @@ class KListSpec(): Spek() {
                 it("map()") {
                     assertEquals(klist(2, 3, 4, 5, 6), klist.map {it + 1})
                 }
+                it("flatMap()") {
+                    val list = klist(1, 2, 3)
+                    assertEquals(klist(1, 1, 2, 2, 3, 3), list.flatMap{x -> klist(x, x)})
+                }
+                it("concat") {
+                    val list = klist(1, 2, 3)
+                    assertEquals(klist(1, 2, 3, 4, 5, 1, 2, 3), klist concat list)
+                }
             }
         }
     }
