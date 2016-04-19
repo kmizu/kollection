@@ -19,6 +19,9 @@ class KListSpec(): Spek() {
                 it("foldLeft()") {
                     assertEquals(15, klist.foldLeft(0){l, r -> l + r})
                 }
+                it("foldRight()") {
+                    assertEquals(-15, klist.foldRight(0){l, r -> r - l})
+                }
                 it("map()") {
                     assertEquals(klist(2, 3, 4, 5, 6), klist.map {it + 1})
                 }
