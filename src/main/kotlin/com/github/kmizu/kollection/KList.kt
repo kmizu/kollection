@@ -3,7 +3,7 @@ import com.github.kmizu.kollection.kontrol.block
 
 sealed class KList<out T>() {
     companion object {
-        fun <T:Any> make(vararg elements: T): KList<T> = block{
+        fun <T> make(vararg elements: T): KList<T> = block{
             var result: KList<T> = KNil
             for(e in elements.reversed()) {
                 result = e.cons(result)

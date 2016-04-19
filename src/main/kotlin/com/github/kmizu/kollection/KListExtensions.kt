@@ -3,7 +3,7 @@ import com.github.kmizu.kollection.kontrol.block
 
 infix fun <T> T.cons(other: KList<T>): KList<T> = KList.KCons(this, other)
 
-fun <T:Any> klist(vararg elements: T): KList<T> = block{
+fun <T> KList(vararg elements: T): KList<T> = block{
     KList.make(*elements)
 }
 
