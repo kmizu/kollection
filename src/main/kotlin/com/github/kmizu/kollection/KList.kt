@@ -1,7 +1,7 @@
 package com.github.kmizu.kollection
 import com.github.kmizu.kollection.kontrol.block
 
-sealed class KList<out T:Any>() {
+sealed class KList<out T>() {
     companion object {
         fun <T:Any> make(vararg elements: T): KList<T> = block{
             var result: KList<T> = KNil
@@ -11,12 +11,12 @@ sealed class KList<out T:Any>() {
             result
         }
     }
-    class KCons<out T:Any>(val head: T, val tail: KList<T>) : KList<T>() {
+    class KCons<out T>(val head: T, val tail: KList<T>) : KList<T>() {
         override fun equals(other: Any?): Boolean = when (other) {
             is KCons<*> -> this.head == other.head && this.tail == other.tail
             else -> false
         }
-        override fun hashCode(): Int = head.hashCode() + tail.hashCode()
+        override fun hashCode(): Int = tail.hashCode() + (head?.hashCode() ?: 0)
         override fun toString(): String = head.toString() + " :: " + tail
     }
     object KNil : KList<Nothing>() {
