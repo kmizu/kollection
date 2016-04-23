@@ -1,7 +1,7 @@
 package com.github.kmizu.kollection
 import com.github.kmizu.kollection.kontrol.block
 
-sealed class KList<out T>() {
+sealed class KList<out T>() : Iterable<T> {
     companion object {
         fun <T> make(vararg elements: T): KList<T> = block{
             var result: KList<T> = KNil
@@ -78,6 +78,18 @@ sealed class KList<out T>() {
     fun isEmpty(): Boolean = when(this) {
         is KCons<T> -> false
         is KNil -> true
+    }
+    fun forAll(predicate: (T) -> Boolean): Boolean = this.all(predicate)
+    fun exists(predicate: (T) -> Boolean): Boolean = this.any(predicate)
+
+    override fun iterator(): Iterator<T> = object : Iterator<T> {
+        private var elements: KList<T> = this@KList
+        override fun hasNext(): Boolean = !elements.isEmpty()
+        override fun next(): T = block {
+            val value = elements.hd()
+            elements = elements.tl()
+            value
+        }
     }
 }
 
