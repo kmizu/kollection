@@ -6,6 +6,7 @@ import com.github.kmizu.kollection.KList.*
 
 class KListSpec(): Spek() {
     init {
+
         given("A KList") {
             on("which is a KCons") {
                 val klist = KList(1, 2, 3, 4, 5)
