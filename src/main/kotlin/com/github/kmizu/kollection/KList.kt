@@ -79,6 +79,13 @@ sealed class KList<out T>() : Iterable<T> {
         is KCons<T> -> false
         is KNil -> true
     }
+    fun length(): Int = block {
+        tailrec fun loop(rest: KList<T>, count: Int): Int = when(rest) {
+            is KCons<T> -> loop(rest.tail, count + 1)
+            is KNil -> count
+        }
+        loop(this, 0)
+    }
     fun forAll(predicate: (T) -> Boolean): Boolean = this.all(predicate)
     fun exists(predicate: (T) -> Boolean): Boolean = this.any(predicate)
 

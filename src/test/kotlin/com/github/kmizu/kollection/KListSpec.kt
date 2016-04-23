@@ -36,6 +36,9 @@ class KListSpec(): Spek() {
                 it("isEmpty()") {
                     assertEquals(false, klist.isEmpty())
                 }
+                it("length()") {
+                    assertEquals(5, klist.length())
+                }
             }
             on("which is KNil") {
                 val knil: KList<Int> = KNil
@@ -61,6 +64,9 @@ class KListSpec(): Spek() {
                 }
                 it("isEmpty()") {
                     assertEquals(true, knil.isEmpty())
+                }
+                it("length()") {
+                    assertEquals(0, knil.length())
                 }
             }
         }
