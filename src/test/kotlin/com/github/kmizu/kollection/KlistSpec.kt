@@ -3,7 +3,6 @@ import org.jetbrains.spek.api.Spek
 import org.junit.Test
 import kotlin.test.assertEquals
 import com.github.kmizu.kollection.KList.*
-import kotlin.test.assertFailsWith
 
 class KListSpec(): Spek() {
     init {
@@ -29,9 +28,12 @@ class KListSpec(): Spek() {
                     val list = KList(1, 2, 3)
                     assertEquals(KList(1, 1, 2, 2, 3, 3), list.flatMap{ x -> KList(x, x)})
                 }
-                it("concat") {
+                it("concat()") {
                     val list = KList(1, 2, 3)
                     assertEquals(KList(1, 2, 3, 4, 5, 1, 2, 3), klist concat list)
+                }
+                it("isEmpty()") {
+                    assertEquals(false, klist.isEmpty())
                 }
             }
             on("which is KNil") {
@@ -52,9 +54,12 @@ class KListSpec(): Spek() {
                     val list = KList(1, 2, 3)
                     assertEquals(KNil, knil.flatMap{x -> KList(x, x)})
                 }
-                it("concat") {
+                it("concat()") {
                     val list = KList(1, 2, 3)
                     assertEquals(KNil, knil concat knil)
+                }
+                it("isEmpty()") {
+                    assertEquals(true, knil.isEmpty())
                 }
             }
         }

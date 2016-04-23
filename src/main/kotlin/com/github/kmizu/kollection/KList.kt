@@ -75,5 +75,9 @@ sealed class KList<out T>() {
         }
         result.reverse()
     }
+    fun isEmpty(): Boolean = when(this) {
+        is KCons<T> -> false
+        is KNil -> true
+    }
 }
 
