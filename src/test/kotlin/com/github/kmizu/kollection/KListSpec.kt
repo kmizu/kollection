@@ -39,6 +39,12 @@ class KListSpec(): Spek() {
                 it("length()") {
                     assertEquals(5, klist.length())
                 }
+                it("zip() -- 1") {
+                    assertEquals(KList(1 to 0, 2 to 1, 3 to 2, 4 to 3, 5 to 4), klist zip KList(0, 1, 2, 3, 4))
+                }
+                it("zip() -- 2") {
+                    assertEquals(KList(1 to 0, 2 to 1, 3 to 2, 4 to 3), klist zip KList(0, 1, 2, 3))
+                }
             }
             on("which is KNil") {
                 val knil: KList<Int> = KNil
@@ -67,6 +73,9 @@ class KListSpec(): Spek() {
                 }
                 it("length()") {
                     assertEquals(0, knil.length())
+                }
+                it("zip()") {
+                    assertEquals(KNil, knil zip KList(1))
                 }
             }
         }
