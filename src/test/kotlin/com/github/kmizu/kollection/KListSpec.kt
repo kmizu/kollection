@@ -45,6 +45,21 @@ class KListSpec(): Spek() {
                 it("zip() -- 2") {
                     assertEquals(KList(1 to 0, 2 to 1, 3 to 2, 4 to 3), klist zip KList(0, 1, 2, 3))
                 }
+                it("unzip()") {
+                    assertEquals(Pair(KList(1, 2, 3, 4, 5), KList(2, 3, 4, 5, 6)), (klist zip KList(2, 3, 4, 5, 6)).unzip())
+                }
+                it("forAll() -- 1") {
+                    assertEquals(true, klist.forAll { it < 6 })
+                }
+                it("forAll() -- 2") {
+                    assertEquals(false, klist.forAll { it % 2 == 0 })
+                }
+                it("exists() -- 1") {
+                    assertEquals(true, klist.exists { it % 2 == 0 })
+                }
+                it("exists() -- 2") {
+                    assertEquals(false, klist.exists { it > 5 })
+                }
             }
             on("which is KNil") {
                 val knil: KList<Int> = KNil
