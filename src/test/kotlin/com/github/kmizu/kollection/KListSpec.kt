@@ -1,6 +1,5 @@
 package com.github.kmizu.kollection
 import org.jetbrains.spek.api.Spek
-import org.junit.Test
 import kotlin.test.assertEquals
 import com.github.kmizu.kollection.KList.*
 

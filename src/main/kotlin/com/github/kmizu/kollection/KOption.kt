@@ -1,7 +1,5 @@
 package com.github.kmizu.kollection
 
-import com.github.kmizu.kollection.kontrol.block
-
 sealed class KOption<out T>(): Iterable<T> {
     class Some<T>(val value: T) : KOption<T>() {
         override fun equals(other: Any?): Boolean = when(other){
@@ -62,7 +60,7 @@ sealed class KOption<out T>(): Iterable<T> {
         private var value: KOption<T> = this@KOption
         override fun next(): T = when(value) {
             is Some<T> ->
-                block {
+                run {
                     val result = value.get()
                     value = None
                     result

@@ -1,9 +1,8 @@
 package com.github.kmizu.kollection
-import com.github.kmizu.kollection.kontrol.block
 
 sealed class KList<out T>() : Iterable<T> {
     companion object {
-        fun <T> make(vararg elements: T): KList<T> = block{
+        fun <T> make(vararg elements: T): KList<T> = run {
             var result: KList<T> = KNil
             for(e in elements.reversed()) {
                 result = e.cons(result)
@@ -34,35 +33,35 @@ sealed class KList<out T>() : Iterable<T> {
         is KCons<T> -> this.tail
         is KNil -> throw IllegalArgumentException("KNil")
     }
-    fun reverse(): KList<T> = block {
+    fun reverse(): KList<T> = run {
         tailrec fun loop(accumlator: KList<T>, rest: KList<T>): KList<T> = when(rest) {
             is KNil -> accumlator
             is KCons<T> -> loop(rest.head.cons(accumlator), rest.tail)
         }
         loop(KNil, this)
     }
-    fun <U> foldLeft(z: U, function: (U, T) -> U): U  = block {
+    fun <U> foldLeft(z: U, function: (U, T) -> U): U  = run {
         tailrec fun loop(list: KList<T>, accumulator: U): U = when(list) {
             is KCons<T> -> loop(list.tail, function(accumulator, list.head))
             is KNil -> accumulator
         }
         loop(this, z)
     }
-    fun <U> foldRight(z: U, function: (T, U) -> U): U = block {
+    fun <U> foldRight(z: U, function: (T, U) -> U): U = run {
         tailrec fun loop(list: KList<T>, accumulator: U): U = when(list) {
             is KCons<T> -> loop(list.tail, function(list.head, accumulator))
             is KNil -> accumulator
         }
         loop(this.reverse(), z)
     }
-    fun <U> map(function: (T) -> U): KList<U>  = block {
+    fun <U> map(function: (T) -> U): KList<U>  = run {
         tailrec fun loop(list: KList<T>, result: KList<U>): KList<U> = when(list) {
             is KCons<T> -> loop(list.tail, function(list.head) cons result)
             is KNil -> result
         }
         loop(this, KNil).reverse()
     }
-    fun <U> flatMap(function: (T) -> KList<U>): KList<U> = block {
+    fun <U> flatMap(function: (T) -> KList<U>): KList<U> = run {
         var result: KList<U> = KNil
         var rest: KList<T> = this
         while(rest != KNil) {
@@ -79,14 +78,14 @@ sealed class KList<out T>() : Iterable<T> {
         is KCons<T> -> false
         is KNil -> true
     }
-    fun length(): Int = block {
+    fun length(): Int = run {
         tailrec fun loop(rest: KList<T>, count: Int): Int = when(rest) {
             is KCons<T> -> loop(rest.tail, count + 1)
             is KNil -> count
         }
         loop(this, 0)
     }
-    infix fun <U> zip(another: KList<U>): KList<Pair<T, U>> = block {
+    infix fun <U> zip(another: KList<U>): KList<Pair<T, U>> = run {
         tailrec fun loop(a: KList<T>, b: KList<U>, result: KList<Pair<T, U>>): KList<Pair<T, U>> =
             if(!a.isEmpty() && !b.isEmpty()){
                 loop(a.tl(), b.tl(), Pair(a.hd(), b.hd()) cons result)
@@ -101,7 +100,7 @@ sealed class KList<out T>() : Iterable<T> {
     override fun iterator(): Iterator<T> = object : Iterator<T> {
         private var elements: KList<T> = this@KList
         override fun hasNext(): Boolean = !elements.isEmpty()
-        override fun next(): T = block {
+        override fun next(): T = run {
             val value = elements.hd()
             elements = elements.tl()
             value
