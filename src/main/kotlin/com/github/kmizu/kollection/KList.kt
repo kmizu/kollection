@@ -87,13 +87,12 @@ sealed class KList<out T>() : Iterable<T> {
         loop(this, 0)
     }
     infix fun <U> zip(another: KList<U>): KList<Pair<T, U>> = block {
-        tailrec fun loop(a: KList<T>, b: KList<U>, result: KList<Pair<T, U>>): KList<Pair<T, U>> = block {
+        tailrec fun loop(a: KList<T>, b: KList<U>, result: KList<Pair<T, U>>): KList<Pair<T, U>> =
             if(!a.isEmpty() && !b.isEmpty()){
                 loop(a.tl(), b.tl(), Pair(a.hd(), b.hd()) cons result)
             } else {
                 result.reverse()
             }
-        }
         loop(this, another, KNil)
     }
     fun forAll(predicate: (T) -> Boolean): Boolean = this.all(predicate)
