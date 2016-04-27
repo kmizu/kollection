@@ -25,14 +25,16 @@ sealed class KList<out T>() : Iterable<T> {
         }
         override fun toString(): String = "KNil"
     }
-    fun hd(): T = when(this) {
-        is KCons<T> -> this.head
-        is KNil -> throw IllegalArgumentException("KNil")
-    }
-    fun tl(): KList<T> = when(this) {
+    val hd: T
+      get() = when(this) {
+          is KCons<T> -> this.head
+          is KNil -> throw IllegalArgumentException("KNil")
+      }
+    val tl: KList<T>
+      get() = when(this) {
         is KCons<T> -> this.tail
         is KNil -> throw IllegalArgumentException("KNil")
-    }
+      }
     fun reverse(): KList<T> = run {
         tailrec fun loop(accumlator: KList<T>, rest: KList<T>): KList<T> = when(rest) {
             is KNil -> accumlator
@@ -65,11 +67,11 @@ sealed class KList<out T>() : Iterable<T> {
         var result: KList<U> = KNil
         var rest: KList<T> = this
         while(rest != KNil) {
-            var rest2: KList<U> = function(rest.hd())
-            rest = rest.tl()
+            var rest2: KList<U> = function(rest.hd)
+            rest = rest.tl
             while(rest2 != KNil) {
-                result = rest2.hd() cons result
-                rest2 = rest2.tl()
+                result = rest2.hd cons result
+                rest2 = rest2.tl
             }
         }
         result.reverse()
@@ -88,7 +90,7 @@ sealed class KList<out T>() : Iterable<T> {
     infix fun <U> zip(another: KList<U>): KList<Pair<T, U>> = run {
         tailrec fun loop(a: KList<T>, b: KList<U>, result: KList<Pair<T, U>>): KList<Pair<T, U>> =
             if(!a.isEmpty() && !b.isEmpty()){
-                loop(a.tl(), b.tl(), Pair(a.hd(), b.hd()) cons result)
+                loop(a.tl, b.tl, Pair(a.hd, b.hd) cons result)
             } else {
                 result.reverse()
             }
@@ -101,8 +103,8 @@ sealed class KList<out T>() : Iterable<T> {
         private var elements: KList<T> = this@KList
         override fun hasNext(): Boolean = !elements.isEmpty()
         override fun next(): T = run {
-            val value = elements.hd()
-            elements = elements.tl()
+            val value = elements.hd
+            elements = elements.tl
             value
         }
     }
