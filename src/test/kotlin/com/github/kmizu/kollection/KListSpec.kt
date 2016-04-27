@@ -59,6 +59,9 @@ class KListSpec(): Spek() {
                 it("exists() -- 2") {
                     assertEquals(false, klist.exists { it > 5 })
                 }
+                it("get()") {
+                    assertEquals(5, klist[4])
+                }
             }
             on("which is KNil") {
                 val knil: KList<Int> = KNil

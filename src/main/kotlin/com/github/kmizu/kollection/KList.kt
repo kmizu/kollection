@@ -96,6 +96,17 @@ sealed class KList<out T>() : Iterable<T> {
             }
         loop(this, another, KNil)
     }
+    operator fun get(index: Int): T = run {
+        tailrec fun loop(a: KList<T>, i: Int): T = when(a) {
+            is KCons<T> -> if(i == 0) a.head else loop(a.tail, i - 1)
+            is KNil -> throw IllegalArgumentException("KNil")
+        }
+        if(index < 0) {
+            throw IllegalArgumentException("negative index")
+        } else {
+            loop(this, index)
+        }
+    }
     fun forAll(predicate: (T) -> Boolean): Boolean = this.all(predicate)
     fun exists(predicate: (T) -> Boolean): Boolean = this.any(predicate)
 
