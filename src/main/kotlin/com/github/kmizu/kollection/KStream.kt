@@ -40,4 +40,8 @@ sealed abstract class KStream<out T> {
         }
         override fun toString(): String = "KStreamNil"
     }
+    fun <U> map(function: (T) -> U): KStream<U> = when(this) {
+        is KStreamCons<T> -> KStreamCons(function(this.hd()), { this.tl().map(function) })
+        is KStreamNil -> KStreamNil
+    }
 }
