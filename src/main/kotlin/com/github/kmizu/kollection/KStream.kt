@@ -70,6 +70,10 @@ sealed abstract class KStream<out T> {
         if(isEmpty || !predicate(this.hd)) this
         else this.tl dropWhile (predicate)
     }
+    infix fun <U> zip(another: KStream<U>): KStream<Pair<T, U>> = run {
+        if(this.isEmpty || another.isEmpty) KStreamNil
+        else KStreamCons(Pair(this.hd, another.hd), { this.tl zip another.tl })
+    }
     fun toKList(): KList<T> = run {
         fun loop(rest: KStream<T>, result: KList<T>): KList<T> = when(rest) {
             is KStreamCons<T> -> loop(rest.tl, rest.hd cons result)

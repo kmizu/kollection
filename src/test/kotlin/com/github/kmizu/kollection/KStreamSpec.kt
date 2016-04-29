@@ -22,6 +22,11 @@ class KStreamSpec(): Spek() {
                 it("dropWhile()") {
                     assertEquals(KList(2, 3, 4, 5), nat.dropWhile {it < 2}.take(4).toKList())
                 }
+                it("fibonacchi stream") {
+                    fun fib(): KStream<Int> = KStreamCons(0, { KStreamCons(1, { fib() zip fib().tl map {it.first + it.second} }) })
+                    assertEquals(KList(0, 1, 1, 2, 3, 5, 8), fib().take(7).toKList())
+                }
+
                 it("toKList() should throw StackOverflowError") {
                     assertFailsWith(StackOverflowError::class) {
                         nat.toKList()
