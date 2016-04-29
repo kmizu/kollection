@@ -7,26 +7,25 @@ import kotlin.test.assertFailsWith
 class KStreamSpec(): Spek() {
     init {
         given("KStream") {
-            on("handling infinite stream") {
+            on("an infinite stream describing natural numbers") {
                 fun fromInt(from: Int): KStream<Int> = KStreamCons(from, { fromInt(from + 1) })
                 val nat = fromInt(0)
-                it("map() and take()") {
+                it("map{x -> x + 1}.take(3) produces KStream of (1, 2, 3)") {
                     assertEquals(KList(1, 2, 3), nat.map { it + 1 }.take(3).toKList())
                 }
-                it("map() and drop()") {
+                it("map{x -> x + 1}.drop(3) produces KStream of (4, 5, 6)") {
                     assertEquals(KList(4, 5, 6), nat.map { it + 1 }.drop(3).take(3).toKList())
                 }
-                it("takeWhile()") {
+                it("takeWhile{x -> x < 6} produces KStream of (0, 1, 2, 3, 4, 5)") {
                     assertEquals(KList(0, 1, 2, 3, 4, 5), nat.takeWhile{it <  6}.toKList())
                 }
-                it("dropWhile()") {
+                it("dropWhile{x -> x < 2} produces KStream of (2, 3, 4, 5, ...)") {
                     assertEquals(KList(2, 3, 4, 5), nat.dropWhile {it < 2}.take(4).toKList())
                 }
-                it("fibonacchi stream") {
+                it("KStream describing fibonacci can be defined") {
                     fun fib(): KStream<Int> = KStreamCons(0, { KStreamCons(1, { fib() zip fib().tl map {it.first + it.second} }) })
                     assertEquals(KList(0, 1, 1, 2, 3, 5, 8), fib().take(7).toKList())
                 }
-
                 it("toKList() should throw StackOverflowError") {
                     assertFailsWith(StackOverflowError::class) {
                         nat.toKList()
