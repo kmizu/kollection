@@ -3,12 +3,16 @@ package com.github.kmizu.kollection
 sealed abstract class KStream<out T> {
     abstract val hd: T
     abstract val tl: KStream<T>
-    class KStreamCons<out T>(internal val head: T, internal val tail: () -> KStream<T>) : KStream<T>() {
+    val isEmpty: Boolean
+        get() = when(this) {
+            is KStreamCons<T> -> false
+            is KStreamNil -> true
+        }
+    class KStreamCons<out T>(head: T, tail: () -> KStream<T>) : KStream<T>() {
         private var tlVal: KStream<T>? = null
         private var tlGen: (() -> KStream<T>)? = tail
         private fun tailDefined(): Boolean = tlGen == null
-        override val hd: T
-            get() = head
+        override val hd: T = head
         override val tl: KStream<T>
             get() = run {
                 if (!tailDefined()) {
@@ -49,8 +53,19 @@ sealed abstract class KStream<out T> {
         is KStreamNil -> KStreamNil
     }
     infix fun take(n: Int): KStream<T> = run {
-        if (n <= 0 || this == KStreamNil) KStreamNil
+        if (n <= 0 || isEmpty) KStreamNil
         else if (n == 1) KStreamCons(this.hd, { KStreamNil})
         else KStreamCons(this.hd, { this.tl take (n - 1) })
+    }
+    infix fun drop(n: Int): KStream<T> = run {
+        if (n <= 0 || isEmpty) this
+        else this.tl drop (n - 1)
+    }
+    fun toKList(): KList<T> = run {
+        fun loop(rest: KStream<T>, result: KList<T>): KList<T> = when(rest) {
+            is KStreamCons<T> -> loop(rest.tl, rest.hd cons result)
+            is KStreamNil -> result.reverse()
+        }
+        loop(this, KList.KNil)
     }
 }
