@@ -33,10 +33,10 @@ class KListSpec(): Spek() {
                     assertEquals(KList(1, 2, 3, 4, 5, 1, 2, 3), klist concat list)
                 }
                 it("isEmpty()") {
-                    assertEquals(false, klist.isEmpty())
+                    assertEquals(false, klist.isEmpty)
                 }
                 it("length()") {
-                    assertEquals(5, klist.length())
+                    assertEquals(5, klist.length)
                 }
                 it("zip() -- 1") {
                     assertEquals(KList(1 to 0, 2 to 1, 3 to 2, 4 to 3, 5 to 4), klist zip KList(0, 1, 2, 3, 4))
@@ -85,11 +85,11 @@ class KListSpec(): Spek() {
                     val list = KList(1, 2, 3)
                     assertEquals(KNil, knil concat knil)
                 }
-                it("isEmpty()") {
-                    assertEquals(true, knil.isEmpty())
+                it("isEmpty") {
+                    assertEquals(true, knil.isEmpty)
                 }
                 it("length()") {
-                    assertEquals(0, knil.length())
+                    assertEquals(0, knil.length)
                 }
                 it("zip()") {
                     assertEquals(KNil, knil zip KList(1))

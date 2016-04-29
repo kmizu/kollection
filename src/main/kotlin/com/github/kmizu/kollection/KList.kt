@@ -76,20 +76,22 @@ sealed class KList<out T>() : Iterable<T> {
         }
         result.reverse()
     }
-    fun isEmpty(): Boolean = when(this) {
-        is KCons<T> -> false
-        is KNil -> true
-    }
-    fun length(): Int = run {
-        tailrec fun loop(rest: KList<T>, count: Int): Int = when(rest) {
-            is KCons<T> -> loop(rest.tail, count + 1)
-            is KNil -> count
+    val isEmpty: Boolean
+        get() = when(this) {
+            is KCons<T> -> false
+            is KNil -> true
         }
-        loop(this, 0)
-    }
+    val length: Int
+        get() = run {
+            tailrec fun loop(rest: KList<T>, count: Int): Int = when(rest) {
+                is KCons<T> -> loop(rest.tail, count + 1)
+                is KNil -> count
+            }
+            loop(this, 0)
+        }
     infix fun <U> zip(another: KList<U>): KList<Pair<T, U>> = run {
         tailrec fun loop(a: KList<T>, b: KList<U>, result: KList<Pair<T, U>>): KList<Pair<T, U>> =
-            if(!a.isEmpty() && !b.isEmpty()){
+            if(!a.isEmpty && !b.isEmpty){
                 loop(a.tl, b.tl, Pair(a.hd, b.hd) cons result)
             } else {
                 result.reverse()
@@ -112,7 +114,7 @@ sealed class KList<out T>() : Iterable<T> {
 
     override fun iterator(): Iterator<T> = object : Iterator<T> {
         private var elements: KList<T> = this@KList
-        override fun hasNext(): Boolean = !elements.isEmpty()
+        override fun hasNext(): Boolean = !elements.isEmpty
         override fun next(): T = run {
             val value = elements.hd
             elements = elements.tl
