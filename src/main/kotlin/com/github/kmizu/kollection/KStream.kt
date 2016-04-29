@@ -61,6 +61,11 @@ sealed abstract class KStream<out T> {
         if (n <= 0 || isEmpty) this
         else this.tl drop (n - 1)
     }
+    infix fun takeWhile(predicate: (T) -> Boolean): KStream<T> = run {
+        if(isEmpty) KStreamNil
+        else if(predicate(this.hd)) KStreamCons(this.hd, { this.tl.takeWhile(predicate) })
+        else KStreamNil
+    }
     fun toKList(): KList<T> = run {
         fun loop(rest: KStream<T>, result: KList<T>): KList<T> = when(rest) {
             is KStreamCons<T> -> loop(rest.tl, rest.hd cons result)

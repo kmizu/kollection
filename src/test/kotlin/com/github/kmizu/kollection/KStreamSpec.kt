@@ -16,6 +16,9 @@ class KStreamSpec(): Spek() {
                 it("map() and drop()") {
                     assertEquals(KList(4, 5, 6), nat.map { it + 1 }.drop(3).take(3).toKList())
                 }
+                it("takeWhile()") {
+                    assertEquals(KList(0, 1, 2, 3, 4, 5), nat.takeWhile{it <  6}.toKList())
+                }
                 it("toKList() should throw StackOverflowError") {
                     assertFailsWith(StackOverflowError::class) {
                         nat.toKList()
