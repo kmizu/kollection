@@ -1,5 +1,7 @@
 package com.github.kmizu.kollection
 
+import com.github.kmizu.kollection.type_classes.Monoid
+
 infix fun <T> T.cons(other: KList<T>): KList<T> = KList.KCons(this, other)
 
 fun <T> KList(vararg elements: T): KList<T> = run {
@@ -21,3 +23,5 @@ fun <T, U> KList<Pair<T, U>>.unzip(): Pair<KList<T>, KList<U>> = run {
     }
     loop(this, KList.KNil, KList.KNil)
 }
+
+fun <T> KList<T>.sum(monoid: Monoid<T>): T = this.foldLeft(monoid.mzero()){a, e -> monoid.mplus(a, e)}
