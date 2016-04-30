@@ -1,14 +1,14 @@
 package com.github.kmizu.kollection
 
-sealed class KStream<out T> : Foldable<T> {
+sealed class KStream<out T> : Foldable<T>, ImmutableLinearSequence<T> {
     companion object {
         fun <T> forever(action: () -> T): KStream<T> = action() cons { forever(action) }
         fun from(number: Int): KStream<Int> = number cons { from(number + 1 ) }
     }
-    abstract val hd: T
-    abstract val tl: KStream<T>
+    abstract override val hd: T
+    abstract override val tl: KStream<T>
     abstract val isTailDefined: Boolean
-    val isEmpty: Boolean
+    override val isEmpty: Boolean
         get() = when(this) {
             is KStreamCons<T> -> false
             is KStreamNil -> true

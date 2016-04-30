@@ -1,6 +1,6 @@
 package com.github.kmizu.kollection
 
-sealed class KList<out T>() : Iterable<T>, Foldable<T> {
+sealed class KList<out T>() : Iterable<T>, Foldable<T>, ImmutableLinearSequence<T> {
     companion object {
         fun <T> make(vararg elements: T): KList<T> = run {
             var result: KList<T> = KNil
@@ -36,8 +36,8 @@ sealed class KList<out T>() : Iterable<T>, Foldable<T> {
         override val tl: Nothing
             get() = throw IllegalArgumentException("KNil")
     }
-    abstract val hd: T
-    abstract val tl: KList<T>
+    abstract override val hd: T
+    abstract override val tl: KList<T>
     fun reverse(): KList<T> = run {
         tailrec fun loop(accumlator: KList<T>, rest: KList<T>): KList<T> = when(rest) {
             is KNil -> accumlator
@@ -79,7 +79,7 @@ sealed class KList<out T>() : Iterable<T>, Foldable<T> {
         }
         result.reverse()
     }
-    val isEmpty: Boolean
+    override val isEmpty: Boolean
         get() = when(this) {
             is KCons<T> -> false
             is KNil -> true
