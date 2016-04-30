@@ -4,20 +4,30 @@ import kotlin.test.assertEquals
 
 class KStackSpec(): Spek() {
     init {
-        given("A KStack") {
-            on("elements are 1, 2, 3, 4, 5") {
-                val kstack = KStack<Int>().push(1).push(2).push(3).push(4).push(5)
-                it("push()") {
-                    assertEquals(KStack<Int>(KList(6, 5, 4, 3, 2, 1)), kstack.push(6))
+        given("A KStack which elements are 1, 2, 3, 4, 5") {
+            val kstack = KStack(1, 2, 3, 4, 5)
+            on("performing push to each element") {
+                val result = KStack<Int>().push(1).push(2).push(3).push(4).push(5)
+                it("produce the same stack") {
+                    assertEquals(kstack, result)
                 }
-                it("top()") {
-                    assertEquals(5, kstack.top())
+            }
+            on("performing top") {
+                val result = kstack.top()
+                it("returns 5") {
+                    assertEquals(5, result)
                 }
-                it("pop()") {
-                    assertEquals(KStack<Int>(KList(4, 3, 2, 1)), kstack.pop())
+            }
+            on("performing pop") {
+                val result = kstack.pop()
+                it("returns KStack(1, 2, 3, 4)") {
+                    assertEquals(KStack(1, 2, 3, 4), result)
                 }
-                it("isEmpty()") {
-                    assertEquals(false, kstack.isEmpty())
+            }
+            on("performing isEmpty") {
+                val result = kstack.isEmpty()
+                it("returns false") {
+                    assertEquals(false, result)
                 }
             }
         }
