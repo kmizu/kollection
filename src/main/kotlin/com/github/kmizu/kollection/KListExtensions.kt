@@ -24,4 +24,4 @@ fun <T, U> KList<Pair<T, U>>.unzip(): Pair<KList<T>, KList<U>> = run {
     loop(this, KList.Nil, KList.Nil)
 }
 
-fun <T> KList<T>.sum(KMonoid: KMonoid<T>): T = this.foldLeft(KMonoid.mzero()){ a, e -> KMonoid.mplus(a, e)}
+fun <T> KList<T>.sum(monoid: KMonoid<T>): T = this.foldLeft(monoid.mzero()){ a, e -> monoid.mplus(a, e)}
