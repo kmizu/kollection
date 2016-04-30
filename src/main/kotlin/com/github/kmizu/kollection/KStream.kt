@@ -7,6 +7,7 @@ sealed class KStream<out T> {
     }
     abstract val hd: T
     abstract val tl: KStream<T>
+    abstract val isTailDefined: Boolean
     val isEmpty: Boolean
         get() = when(this) {
             is KStreamCons<T> -> false
@@ -15,13 +16,14 @@ sealed class KStream<out T> {
     class KStreamCons<out T>(head: T, tail: () -> KStream<T>) : KStream<T>() {
         private var tlVal: KStream<T>? = null
         private var tlGen: (() -> KStream<T>)? = tail
-        private fun tailDefined(): Boolean = tlGen == null
+        override val isTailDefined: Boolean
+            get() = tlGen == null
         override val hd: T = head
         override val tl: KStream<T>
             get() = run {
-                if (!tailDefined()) {
+                if (!isTailDefined) {
                     synchronized(this) {
-                        if (!tailDefined()) {
+                        if (!isTailDefined) {
                             tlVal = (tlGen!!)()
                             tlGen = null
                         }
@@ -34,23 +36,48 @@ sealed class KStream<out T> {
             else -> false
         }
         override fun hashCode(): Int = tl.hashCode() + (hd?.hashCode() ?: 0)
-        override fun toString(): String = if(tailDefined()) {
-            hd.toString() + "  :% " + tl.toString()
-        } else {
-            hd.toString() + "  :% ?"
-        }
     }
     object KStreamNil : KStream<Nothing>() {
         override val hd: Nothing
             get() = throw IllegalArgumentException("KStreamNil")
         override val tl: Nothing
             get() = throw IllegalArgumentException("KStreamNil")
-
+        override val isTailDefined: Boolean
+            get() = throw IllegalArgumentException("KStreamNil")
         override fun equals(other: Any?): Boolean = when (other) {
             is KStreamNil -> true
             else -> false
         }
         override fun toString(): String = "KStreamNil"
+    }
+    override fun toString(): String = run {
+        val buffer = StringBuilder()
+        fun loop(stream: KStream<T>): Unit = when(stream){
+            is KStreamCons<T> -> run {
+                buffer.append(", ${stream.hd}")
+                if(stream.isTailDefined) {
+                    loop(stream.tl)
+                } else {
+                    buffer.append(", ?)")
+                }
+                Unit
+            }
+            is KStreamNil -> run {
+                buffer.append(")")
+                Unit
+            }
+        }
+        buffer.append("KStream(")
+        when(this) {
+            is KStreamCons<T> -> run {
+                buffer.append("${this.hd}")
+                loop(this.tl)
+            }
+            is KStreamNil -> run {
+                buffer.append(")")
+            }
+        }
+        String(buffer)
     }
     infix fun <U> map(function: (T) -> U): KStream<U> = when(this) {
         is KStreamCons<T> -> function(this.hd) cons { this.tl.map(function) }

@@ -12,6 +12,14 @@ class KStreamSpec(): Spek() {
                     assertEquals(1 cons { 2 cons { 3 cons { 4 cons {KStreamNil}}}}, KStream(1, 2, 3, 4))
                 }
             }
+            on("KStream describing counter") {
+                var i = 0
+                fun countUp(): Int = run{ i += 1; i }
+                val counter: KStream<Int> = KStream.forever { countUp() }
+                it("take(3) produce KStream(1, 2, 3)") {
+                    assertEquals(KStream(1, 2, 3), counter.take(3))
+                }
+            }
             on("an infinite stream describing natural numbers") {
                 val nat = KStream.from(0)
                 it("map{x -> x + 1}.take(3) produces KStream(1, 2, 3)") {
@@ -29,11 +37,6 @@ class KStreamSpec(): Spek() {
                 it("KStream describing fibonacci can be defined") {
                     fun fib(): KStream<Int> = 0 cons { 1 cons { fib() zip fib().tl map {it.first + it.second} } }
                     assertEquals(KList(0, 1, 1, 2, 3, 5, 8), fib().take(7).toKList())
-                }
-                it("KStream describing counter") {
-                    var i = 0
-                    fun countUp(): Int = run{ i += 1; i }
-                    assertEquals(KList(1, 2, 3), KStream.forever{ countUp() }.take(3).toKList())
                 }
                 it("calculate sum of first 5 numbers using foldLeft()") {
                     assertEquals(10, nat.take(5).foldLeft(0){a, b -> a + b})
