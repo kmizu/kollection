@@ -23,14 +23,12 @@ sealed class KList<out T>() : KFoldable<T>, KImmutableLinearSequence<T> {
         }
 
         override fun hashCode(): Int = tl.hashCode() + (hd?.hashCode() ?: 0)
-        override fun toString(): String = hd.toString() + " :: " + tl
     }
     object Nil : KList<Nothing>() {
         override fun equals(other: Any?): Boolean = when (other) {
             is Nil -> true
             else -> false
         }
-        override fun toString(): String = "Nil"
         override val hd: Nothing
             get() = throw IllegalArgumentException("KList.Nil")
         override val tl: Nothing
@@ -38,6 +36,31 @@ sealed class KList<out T>() : KFoldable<T>, KImmutableLinearSequence<T> {
     }
     abstract override val hd: T
     abstract override val tl: KList<T>
+    override fun toString(): String = run {
+        val buffer = StringBuilder()
+        fun loop(list: KList<T>): Unit = when(list){
+            is Cons<T> -> run {
+                buffer.append(", ${list.hd}")
+                loop(list.tl)
+                Unit
+            }
+            is Nil -> run {
+                buffer.append(")")
+                Unit
+            }
+        }
+        buffer.append("KList(")
+        when(this) {
+            is Cons<T> -> run {
+                buffer.append("${this.hd}")
+                loop(this.tl)
+            }
+            is Nil -> run {
+                buffer.append(")")
+            }
+        }
+        String(buffer)
+    }
     fun reverse(): KList<T> = run {
         tailrec fun loop(accumlator: KList<T>, rest: KList<T>): KList<T> = when(rest) {
             is Nil -> accumlator

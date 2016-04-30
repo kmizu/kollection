@@ -15,96 +15,165 @@ class KListSpec(): Spek() {
                 }
             }
         }
-        given("A KList") {
-            on("which is a KCons") {
-                val klist = KList(1, 2, 3, 4, 5)
-                it("cons()") {
-                    assertEquals(klist, 1 cons (2 cons (3 cons (4 cons (5 cons Nil)))))
-                }
-                it("reverse()") {
-                    assertEquals(KList(5, 4, 3, 2, 1), klist.reverse())
-                }
-                it("foldLeft()") {
-                    assertEquals(15, klist.foldLeft(0){l, r -> l + r})
-                }
-                it("foldRight()") {
-                    assertEquals(-15, klist.foldRight(0){l, r -> r - l})
-                }
-                it("map()") {
-                    assertEquals(KList(2, 3, 4, 5, 6), klist.map {it + 1})
-                }
-                it("flatMap()") {
-                    val list = KList(1, 2, 3)
-                    assertEquals(KList(1, 1, 2, 2, 3, 3), list.flatMap{ x -> KList(x, x)})
-                }
-                it("concat()") {
-                    val list = KList(1, 2, 3)
-                    assertEquals(KList(1, 2, 3, 4, 5, 1, 2, 3), klist concat list)
-                }
-                it("isEmpty()") {
-                    assertEquals(false, klist.isEmpty)
-                }
-                it("length()") {
-                    assertEquals(5, klist.length)
-                }
-                it("zip() -- 1") {
-                    assertEquals(KList(1 to 0, 2 to 1, 3 to 2, 4 to 3, 5 to 4), klist zip KList(0, 1, 2, 3, 4))
-                }
-                it("zip() -- 2") {
-                    assertEquals(KList(1 to 0, 2 to 1, 3 to 2, 4 to 3), klist zip KList(0, 1, 2, 3))
-                }
-                it("unzip()") {
-                    assertEquals(Pair(KList(1, 2, 3, 4, 5), KList(2, 3, 4, 5, 6)), (klist zip KList(2, 3, 4, 5, 6)).unzip())
-                }
-                it("forAll() -- 1") {
-                    assertEquals(true, klist.forAll { it < 6 })
-                }
-                it("forAll() -- 2") {
-                    assertEquals(false, klist.forAll { it % 2 == 0 })
-                }
-                it("exists() -- 1") {
-                    assertEquals(true, klist.exists { it % 2 == 0 })
-                }
-                it("exists() -- 2") {
-                    assertEquals(false, klist.exists { it > 5 })
-                }
-                it("get()") {
-                    assertEquals(5, klist[4])
-                }
-                it("flatten()") {
-                    assertEquals(KList(1, 2, 3, 4, 5, 6), KList(KList(1, 2), KList(3, 4), KList(5, 6)).flatten())
+        given("A KList of 1, 2, 3, 4, 5") {
+            val klist = KList(1, 2, 3, 4, 5)
+            on("performing cons to each element") {
+                it("produces the same KList") {
+                    val result = 1 cons (2 cons (3 cons (4 cons (5 cons Nil))))
+                    assertEquals(klist, result)
                 }
             }
-
-            on("which is KNil") {
-                val knil: KList<Int> = Nil
-                it("reverse()") {
+            on("performing reverse") {
+                val result = klist.reverse()
+                it("produces KList(5, 4, 3, 2, 1)") {
+                    assertEquals(KList(5, 4, 3, 2, 1), result)
+                }
+            }
+            on("calculating sum of the list using foldLeft") {
+                val result = klist.foldLeft(0){l, r -> l + r}
+                it("returns 15") {
+                    assertEquals(15, result)
+                }
+            }
+            on("performing map") {
+                val result = klist.map{it + 1}
+                it("produces KList(2, 3, 4, 5)") {
+                    assertEquals(KList(2, 3, 4, 5, 6), result)
+                }
+            }
+            on("calculating -sum using foldRight") {
+                val result = klist.foldRight(0){l, r -> r - l}
+                it("returns -15") {
+                    assertEquals(-15, result)
+                }
+            }
+            on("performing flatMap") {
+                val result = klist.flatMap { x -> KList(x, x) }
+                it("produces KList(1, 1, 2, 2, 3, 3, 4, 4, 5, 5)") {
+                    assertEquals(KList(1, 1, 2, 2, 3, 3, 4, 4, 5, 5), result)
+                }
+            }
+            on("performing zip to itself") {
+                val result = klist zip klist
+                it("produces KList(1 to 1, 2 to 2, 3 to 3, 4 to 4, 5 to 5)") {
+                    assertEquals(KList(1 to 1, 2 to 2, 3 to 3, 4 to 4, 5 to 5), result)
+                }
+            }
+            on("performing zip to KList of 1, 2, 3") {
+                val result = klist zip KList(1, 2, 3)
+                it("produces KList(1 to 1, 2 to 2, 3 to 3)") {
+                    assertEquals(KList(1 to 1, 2 to 2, 3 to 3), result)
+                }
+            }
+            on("performing length") {
+                val result = klist.length
+                it("returns 5") {
+                    assertEquals(5, result)
+                }
+            }
+            on("performing isEmpty") {
+                val result = klist.isEmpty
+                it("returns false") {
+                    assertEquals(false, result)
+                }
+            }
+            on("performing concat to KList of 1, 2, 3") {
+                val result = klist concat KList(1, 2, 3)
+                it("produces KList(1, 2, 3, 4, 5, 1, 2, 3") {
+                    assertEquals(KList(1, 2, 3, 4, 5, 1, 2, 3), result)
+                }
+            }
+            on("performing unzip") {
+                val result = (klist zip KList(2, 3, 4, 5, 6)).unzip()
+                it("produces Pair(KList(1, 2, 3, 4, 5), KList(2, 3, 4, 5, 6") {
+                    assertEquals(Pair(KList(1, 2, 3, 4, 5), KList(2, 3, 4, 5, 6)), result)
+                }
+            }
+            on("performing forAll [1]") {
+                val result = klist.forAll { it < 6}
+                it("returns true") {
+                    assertEquals(true, result)
+                }
+            }
+            on("performing forAll [2]") {
+                val result = klist.forAll { it % 2 == 0}
+                it("returns false") {
+                    assertEquals(false, result)
+                }
+            }
+            on("performing exists [1]") {
+                val result = klist.exists { it % 2 == 0}
+                it("returns true") {
+                    assertEquals(true, result)
+                }
+            }
+            on("performing exists [2]") {
+                val result = klist.exists { it > 5}
+                it("returns false") {
+                    assertEquals(false, result)
+                }
+            }
+            on("performing get which arg is 4") {
+                val result = klist[4]
+                it("returns 5") {
+                    assertEquals(5, result)
+                }
+            }
+        }
+        given("A KList of KList of 1, 2 and KList of 3, 4 and KList of 5, 6") {
+            on("performing flatten") {
+                val result = KList(KList(1, 2), KList(3, 4), KList(5, 6)).flatten()
+                it("produces KList(1, 2, 3, 4, 5, 6") {
+                    assertEquals(KList(1, 2, 3, 4, 5, 6), result)
+                }
+            }
+        }
+        given("A Nil") {
+            val knil: KList<Int> = Nil
+            on("performing reverse") {
+                it("produces Nil") {
                     assertEquals(Nil, knil.reverse())
                 }
-                it("foldLeft()") {
+            }
+            on("performing foldLeft") {
+                it("produces 0") {
                     assertEquals(0, knil.foldRight(0){x, y -> x + y})
                 }
-                it("foldRight()") {
+            }
+            on("performing foldRight") {
+                it("produces 0") {
                     assertEquals(0, knil.foldRight(0){x, y -> x + y})
                 }
-                it("map()") {
+            }
+            on("performing map") {
+                it("produces Nil") {
                     assertEquals(Nil, knil.map {it + 1})
                 }
-                it("flatMap()") {
-                    val list = KList(1, 2, 3)
+            }
+            on("performing flatMap") {
+                val list = KList(1, 2, 3)
+                it("produces Nil") {
                     assertEquals(Nil, knil.flatMap{ x -> KList(x, x)})
                 }
-                it("concat()") {
-                    val list = KList(1, 2, 3)
-                    assertEquals(Nil, knil concat knil)
+            }
+            on("performing concat to KList of 1, 2, 3") {
+                val list = KList(1, 2, 3)
+                it("produces KList(1, 2, 3)") {
+                    assertEquals(KList(1, 2, 3), knil concat list)
                 }
-                it("isEmpty") {
+            }
+            on("performing isEmpty") {
+                it("returns true") {
                     assertEquals(true, knil.isEmpty)
                 }
-                it("length()") {
+            }
+            on("performing length") {
+                it("returns 0") {
                     assertEquals(0, knil.length)
                 }
-                it("zip()") {
+            }
+            on("performing zip") {
+                it("returns Nil") {
                     assertEquals(Nil, knil zip KList(1))
                 }
             }
