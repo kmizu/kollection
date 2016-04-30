@@ -2,10 +2,19 @@ package com.github.kmizu.kollection
 import org.jetbrains.spek.api.Spek
 import kotlin.test.assertEquals
 import com.github.kmizu.kollection.KList.*
+import com.github.kmizu.kollection.type_classes.KMonoid
 
 class KListSpec(): Spek() {
     init {
-
+        given("A nested KList") {
+            val a = KList(KList(1, 2), KList(3, 4), KList(5, 6))
+            on("performing sum") {
+                val result = a.sum(KMonoid.KLIST())
+                it("returns KList(1, 2, 3, 4, 5, 6)") {
+                    assertEquals(KList(1, 2, 3, 4, 5, 6), result)
+                }
+            }
+        }
         given("A KList") {
             on("which is a KCons") {
                 val klist = KList(1, 2, 3, 4, 5)
