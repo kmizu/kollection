@@ -7,12 +7,12 @@ import kotlin.test.assertFailsWith
 class KStreamSpec(): Spek() {
     init {
         given("KStream") {
-            on("KStream(1, 2, 3, 4)") {
+            on("consisting of 1, 2, 3, and 4") {
                 it("is equal to 1 cons { 2 cons { 3 cons { 4 cons {KStreamNil}}}}") {
                     assertEquals(1 cons { 2 cons { 3 cons { 4 cons {KStreamNil}}}}, KStream(1, 2, 3, 4))
                 }
             }
-            on("KStream describing counter") {
+            on("describing counter") {
                 var i = 0
                 fun countUp(): Int = run{ i += 1; i }
                 val counter: KStream<Int> = KStream.forever { countUp() }
@@ -20,13 +20,13 @@ class KStreamSpec(): Spek() {
                     assertEquals(KStream(1, 2, 3), counter.take(3))
                 }
             }
-            on("KStream describing fibonacci can be defined") {
+            on("describing fibonacci can be defined") {
                 fun fib(): KStream<Int> = 0 cons { 1 cons { fib() zip fib().tl map {it.first + it.second} } }
                 it("take(5) is KStream(0, 1, 1, 2, 3, 5, 8)") {
                     assertEquals(KStream(0, 1, 1, 2, 3, 5, 8), fib().take(7))
                 }
             }
-            on("an infinite stream describing natural numbers") {
+            on("describing an infinite consisting of natural numbers") {
                 val nat = KStream.from(0)
                 it("map{x -> x + 1}.take(3) produces KStream(1, 2, 3)") {
                     assertEquals(KStream(1, 2, 3), nat.map { it + 1 }.take(3))
