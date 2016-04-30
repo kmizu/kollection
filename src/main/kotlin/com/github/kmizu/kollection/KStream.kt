@@ -83,6 +83,10 @@ sealed class KStream<out T> {
         is KStreamCons<T> -> function(this.hd) cons { this.tl.map(function) }
         is KStreamNil -> KStreamNil
     }
+    infix fun <U> flatMap(function: (T) -> KStream<U>): KStream<U> = when(this) {
+        is KStreamCons<T> -> function(this.hd) concat { this.tl.flatMap(function) }
+        is KStreamNil -> KStreamNil
+    }
     infix fun take(n: Int): KStream<T> = run {
         if (n <= 0 || isEmpty) KStreamNil
         else if (n == 1) this.hd cons { KStreamNil}

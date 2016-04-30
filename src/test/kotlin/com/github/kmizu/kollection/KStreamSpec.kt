@@ -20,6 +20,13 @@ class KStreamSpec(): Spek() {
                     assertEquals(KStream(1, 2, 3), counter.take(3))
                 }
             }
+            on("KStream of 1, 2, 3, ... and KStream of 4, 5, 6, ...") {
+                val a = KStream.from(1)
+                val b = KStream.from(4)
+                it("flatMap()") {
+                    assertEquals(KStream(1, 4, 1, 5, 1, 6), a.flatMap{x -> b.flatMap {y -> KStream(x, y) }}.take(6))
+                }
+            }
             on("describing fibonacci can be defined") {
                 fun fib(): KStream<Int> = 0 cons { 1 cons { fib() zip fib().tl map {it.first + it.second} } }
                 it("take(5) is KStream(0, 1, 1, 2, 3, 5, 8)") {
