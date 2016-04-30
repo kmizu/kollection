@@ -10,13 +10,20 @@ sealed class KList<out T>() : Iterable<T> {
             result
         }
     }
-    class KCons<out T>(val head: T, val tail: KList<T>) : KList<T>() {
+    class KCons<out T>(head: T, tail: KList<T>) : KList<T>() {
         override fun equals(other: Any?): Boolean = when (other) {
-            is KCons<*> -> this.head == other.head && this.tail == other.tail
+            is KCons<*> -> this.hd == other.hd && this.tl == other.tl
             else -> false
         }
-        override fun hashCode(): Int = tail.hashCode() + (head?.hashCode() ?: 0)
-        override fun toString(): String = head.toString() + " :: " + tail
+        override val hd: T
+        override val tl: KList<T>
+        init {
+            hd = head
+            tl = tail
+        }
+
+        override fun hashCode(): Int = tl.hashCode() + (hd?.hashCode() ?: 0)
+        override fun toString(): String = hd.toString() + " :: " + tl
     }
     object KNil : KList<Nothing>() {
         override fun equals(other: Any?): Boolean = when (other) {
@@ -24,41 +31,37 @@ sealed class KList<out T>() : Iterable<T> {
             else -> false
         }
         override fun toString(): String = "KNil"
+        override val hd: Nothing
+            get() = throw IllegalArgumentException("KNil")
+        override val tl: Nothing
+            get() = throw IllegalArgumentException("KNil")
     }
-    val hd: T
-      get() = when(this) {
-          is KCons<T> -> this.head
-          is KNil -> throw IllegalArgumentException("KNil")
-      }
-    val tl: KList<T>
-      get() = when(this) {
-        is KCons<T> -> this.tail
-        is KNil -> throw IllegalArgumentException("KNil")
-      }
+    abstract val hd: T
+    abstract val tl: KList<T>
     fun reverse(): KList<T> = run {
         tailrec fun loop(accumlator: KList<T>, rest: KList<T>): KList<T> = when(rest) {
             is KNil -> accumlator
-            is KCons<T> -> loop(rest.head.cons(accumlator), rest.tail)
+            is KCons<T> -> loop(rest.hd.cons(accumlator), rest.tl)
         }
         loop(KNil, this)
     }
     fun <U> foldLeft(z: U, function: (U, T) -> U): U  = run {
         tailrec fun loop(list: KList<T>, accumulator: U): U = when(list) {
-            is KCons<T> -> loop(list.tail, function(accumulator, list.head))
+            is KCons<T> -> loop(list.tl, function(accumulator, list.hd))
             is KNil -> accumulator
         }
         loop(this, z)
     }
     fun <U> foldRight(z: U, function: (T, U) -> U): U = run {
         tailrec fun loop(list: KList<T>, accumulator: U): U = when(list) {
-            is KCons<T> -> loop(list.tail, function(list.head, accumulator))
+            is KCons<T> -> loop(list.tl, function(list.hd, accumulator))
             is KNil -> accumulator
         }
         loop(this.reverse(), z)
     }
     fun <U> map(function: (T) -> U): KList<U>  = run {
         tailrec fun loop(list: KList<T>, result: KList<U>): KList<U> = when(list) {
-            is KCons<T> -> loop(list.tail, function(list.head) cons result)
+            is KCons<T> -> loop(list.tl, function(list.hd) cons result)
             is KNil -> result
         }
         loop(this, KNil).reverse()
@@ -84,7 +87,7 @@ sealed class KList<out T>() : Iterable<T> {
     val length: Int
         get() = run {
             tailrec fun loop(rest: KList<T>, count: Int): Int = when(rest) {
-                is KCons<T> -> loop(rest.tail, count + 1)
+                is KCons<T> -> loop(rest.tl, count + 1)
                 is KNil -> count
             }
             loop(this, 0)
@@ -100,7 +103,7 @@ sealed class KList<out T>() : Iterable<T> {
     }
     operator fun get(index: Int): T = run {
         tailrec fun loop(a: KList<T>, i: Int): T = when(a) {
-            is KCons<T> -> if(i == 0) a.head else loop(a.tail, i - 1)
+            is KCons<T> -> if(i == 0) a.hd else loop(a.tl, i - 1)
             is KNil -> throw IllegalArgumentException("KNil")
         }
         if(index < 0) {

@@ -19,7 +19,7 @@ fun <T> KList<KList<T>>.flatten(): KList<T> = run {
 fun <T, U> KList<Pair<T, U>>.unzip(): Pair<KList<T>, KList<U>> = run {
     tailrec fun loop(rest: KList<Pair<T, U>>, a: KList<T>, b: KList<U>): Pair<KList<T>, KList<U>> = when(rest) {
         is KList.KNil -> Pair(a.reverse(), b.reverse())
-        is KList.KCons<Pair<T, U>> -> loop(rest.tail, rest.head.first cons a, rest.head.second cons b)
+        is KList.KCons<Pair<T, U>> -> loop(rest.tl, rest.hd.first cons a, rest.hd.second cons b)
     }
     loop(this, KList.KNil, KList.KNil)
 }
