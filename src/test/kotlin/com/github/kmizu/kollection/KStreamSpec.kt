@@ -31,6 +31,9 @@ class KStreamSpec(): Spek() {
                     fun countUp(): Int = run{ i += 1; i }
                     assertEquals(KList(1, 2, 3), KStream.forever{ countUp() }.take(3).toKList())
                 }
+                it("calculate sum of first 5 numbers using foldLeft()") {
+                    assertEquals(10, nat.take(5).foldLeft(0){a, b -> a + b})
+                }
                 it("toKList() should throw StackOverflowError") {
                     assertFailsWith(StackOverflowError::class) {
                         nat.toKList()

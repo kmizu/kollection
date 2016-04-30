@@ -64,6 +64,13 @@ sealed class KStream<out T> {
         if (n <= 0 || isEmpty) this
         else this.tl drop (n - 1)
     }
+    fun <U> foldLeft(z: U, function: (U, T) -> U): U  = run {
+        tailrec fun loop(stream: KStream<T>, accumulator: U): U = when(stream) {
+            is KStreamCons<T> -> loop(stream.tl, function(accumulator, stream.hd))
+            is KStreamNil -> accumulator
+        }
+        loop(this, z)
+    }
     infix fun takeWhile(predicate: (T) -> Boolean): KStream<T> = run {
         if(isEmpty) KStreamNil
         else if(predicate(this.hd)) this.hd cons { this.tl.takeWhile(predicate) }
