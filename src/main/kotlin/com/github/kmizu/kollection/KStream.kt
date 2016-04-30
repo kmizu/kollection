@@ -1,6 +1,9 @@
 package com.github.kmizu.kollection
 
 sealed abstract class KStream<out T> {
+    companion object {
+        fun <T> forever(action: () -> T): KStream<T> = KStreamCons(action(), { forever(action) })
+    }
     abstract val hd: T
     abstract val tl: KStream<T>
     val isEmpty: Boolean

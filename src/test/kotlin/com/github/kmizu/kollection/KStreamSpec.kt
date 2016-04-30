@@ -26,6 +26,11 @@ class KStreamSpec(): Spek() {
                     fun fib(): KStream<Int> = KStreamCons(0, { KStreamCons(1, { fib() zip fib().tl map {it.first + it.second} }) })
                     assertEquals(KList(0, 1, 1, 2, 3, 5, 8), fib().take(7).toKList())
                 }
+                it("KStream describing counter") {
+                    var i = 0
+                    fun countUp(): Int = run{ i += 1; i }
+                    assertEquals(KList(1, 2, 3), KStream.forever{ countUp() }.take(3).toKList())
+                }
                 it("toKList() should throw StackOverflowError") {
                     assertFailsWith(StackOverflowError::class) {
                         nat.toKList()
