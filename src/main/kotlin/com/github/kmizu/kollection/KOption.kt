@@ -1,6 +1,6 @@
 package com.github.kmizu.kollection
 
-sealed class KOption<out T>(): Iterable<T>, Foldable<T>, ImmutableLinearSequence<T> {
+sealed class KOption<out T>(): Iterable<T>, KFoldable<T>, KImmutableLinearSequence<T> {
     class Some<T>(val value: T) : KOption<T>() {
         override fun equals(other: Any?): Boolean = when(other){
             is Some<*> -> value == other.value

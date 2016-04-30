@@ -9,7 +9,7 @@ class KStreamSpec(): Spek() {
         given("Args which consists of 1, 2, 3, and 4") {
             on("performing KStream function") {
                 it("produces (1 cons { 2 cons { 3 cons { 4 cons {KStreamNil}}}})") {
-                    assertEquals(1 cons { 2 cons { 3 cons { 4 cons {KStreamNil}}}}, KStream(1, 2, 3, 4))
+                    assertEquals(1 cons { 2 cons { 3 cons { 4 cons { Nil }}}}, KStream(1, 2, 3, 4))
                 }
             }
         }

@@ -2,7 +2,7 @@ package com.github.kmizu.kollection
 
 import com.github.kmizu.kollection.type_classes.Monoid
 
-infix fun <T> T.cons(other: KList<T>): KList<T> = KList.KCons(this, other)
+infix fun <T> T.cons(other: KList<T>): KList<T> = KList.Cons(this, other)
 
 fun <T> KList(vararg elements: T): KList<T> = run {
     KList.make(*elements)
@@ -18,10 +18,10 @@ fun <T> KList<KList<T>>.flatten(): KList<T> = run {
 
 fun <T, U> KList<Pair<T, U>>.unzip(): Pair<KList<T>, KList<U>> = run {
     tailrec fun loop(rest: KList<Pair<T, U>>, a: KList<T>, b: KList<U>): Pair<KList<T>, KList<U>> = when(rest) {
-        is KList.KNil -> Pair(a.reverse(), b.reverse())
-        is KList.KCons<Pair<T, U>> -> loop(rest.tl, rest.hd.first cons a, rest.hd.second cons b)
+        is KList.Nil -> Pair(a.reverse(), b.reverse())
+        is KList.Cons<Pair<T, U>> -> loop(rest.tl, rest.hd.first cons a, rest.hd.second cons b)
     }
-    loop(this, KList.KNil, KList.KNil)
+    loop(this, KList.Nil, KList.Nil)
 }
 
 fun <T> KList<T>.sum(monoid: Monoid<T>): T = this.foldLeft(monoid.mzero()){a, e -> monoid.mplus(a, e)}

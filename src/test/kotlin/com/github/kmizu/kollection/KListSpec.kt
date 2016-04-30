@@ -10,7 +10,7 @@ class KListSpec(): Spek() {
             on("which is a KCons") {
                 val klist = KList(1, 2, 3, 4, 5)
                 it("cons()") {
-                    assertEquals(klist, 1 cons (2 cons (3 cons (4 cons (5 cons KNil)))))
+                    assertEquals(klist, 1 cons (2 cons (3 cons (4 cons (5 cons Nil)))))
                 }
                 it("reverse()") {
                     assertEquals(KList(5, 4, 3, 2, 1), klist.reverse())
@@ -68,9 +68,9 @@ class KListSpec(): Spek() {
             }
 
             on("which is KNil") {
-                val knil: KList<Int> = KNil
+                val knil: KList<Int> = Nil
                 it("reverse()") {
-                    assertEquals(KNil, knil.reverse())
+                    assertEquals(Nil, knil.reverse())
                 }
                 it("foldLeft()") {
                     assertEquals(0, knil.foldRight(0){x, y -> x + y})
@@ -79,15 +79,15 @@ class KListSpec(): Spek() {
                     assertEquals(0, knil.foldRight(0){x, y -> x + y})
                 }
                 it("map()") {
-                    assertEquals(KNil, knil.map {it + 1})
+                    assertEquals(Nil, knil.map {it + 1})
                 }
                 it("flatMap()") {
                     val list = KList(1, 2, 3)
-                    assertEquals(KNil, knil.flatMap{x -> KList(x, x)})
+                    assertEquals(Nil, knil.flatMap{ x -> KList(x, x)})
                 }
                 it("concat()") {
                     val list = KList(1, 2, 3)
-                    assertEquals(KNil, knil concat knil)
+                    assertEquals(Nil, knil concat knil)
                 }
                 it("isEmpty") {
                     assertEquals(true, knil.isEmpty)
@@ -96,7 +96,7 @@ class KListSpec(): Spek() {
                     assertEquals(0, knil.length)
                 }
                 it("zip()") {
-                    assertEquals(KNil, knil zip KList(1))
+                    assertEquals(Nil, knil zip KList(1))
                 }
             }
         }
