@@ -1,6 +1,6 @@
 package com.github.kmizu.kollection
 
-sealed class KOption<out T>(): Iterable<T> {
+sealed class KOption<out T>(): Iterable<T>, Foldable<T> {
     class Some<T>(val value: T) : KOption<T>() {
         override fun equals(other: Any?): Boolean = when(other){
             is Some<*> -> value == other.value
@@ -21,12 +21,12 @@ sealed class KOption<out T>(): Iterable<T> {
         is None -> throw IllegalArgumentException("None")
     }
 
-    fun <U:Any> foldLeft(z: U, function: (U, T) -> U): U = when(this) {
+    override fun <U> foldLeft(z: U, function: (U, T) -> U): U = when(this) {
         is Some<T> -> function(z, this.value)
         is None -> z
     }
 
-    fun <U:Any> foldRight(z: U, function: (T, U) -> U): U = when(this) {
+    override fun <U> foldRight(z: U, function: (T, U) -> U): U = when(this) {
         is Some<T> -> function(this.value, z)
         is None -> z
     }

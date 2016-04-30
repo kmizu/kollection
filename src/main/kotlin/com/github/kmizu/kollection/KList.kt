@@ -1,6 +1,6 @@
 package com.github.kmizu.kollection
 
-sealed class KList<out T>() : Iterable<T> {
+sealed class KList<out T>() : Iterable<T>, Foldable<T> {
     companion object {
         fun <T> make(vararg elements: T): KList<T> = run {
             var result: KList<T> = KNil
@@ -45,14 +45,14 @@ sealed class KList<out T>() : Iterable<T> {
         }
         loop(KNil, this)
     }
-    fun <U> foldLeft(z: U, function: (U, T) -> U): U  = run {
+    override fun <U> foldLeft(z: U, function: (U, T) -> U): U  = run {
         tailrec fun loop(list: KList<T>, accumulator: U): U = when(list) {
             is KCons<T> -> loop(list.tl, function(accumulator, list.hd))
             is KNil -> accumulator
         }
         loop(this, z)
     }
-    fun <U> foldRight(z: U, function: (T, U) -> U): U = run {
+    override fun <U> foldRight(z: U, function: (T, U) -> U): U = run {
         tailrec fun loop(list: KList<T>, accumulator: U): U = when(list) {
             is KCons<T> -> loop(list.tl, function(list.hd, accumulator))
             is KNil -> accumulator
