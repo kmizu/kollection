@@ -25,7 +25,7 @@ project(":") {
   apply plugin: 'signing'
   mainClassName = "com.github.kmizu.kollection.example.MainKt"
   group = "com.github.kmizu"
-  version = "0.1"
+  version = "0.2-SNAPSHOT"
   ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
   signing {
     required { isReleaseVersion && gradle.taskGraph.hasTask("uploadArchives") }
