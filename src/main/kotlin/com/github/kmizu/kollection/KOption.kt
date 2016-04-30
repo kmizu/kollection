@@ -1,6 +1,6 @@
 package com.github.kmizu.kollection
 
-sealed class KOption<out T>(): Iterable<T>, Foldable<T> {
+sealed class KOption<out T>(): Iterable<T>, Foldable<T>, ImmutableLinearSequence<T> {
     class Some<T>(val value: T) : KOption<T>() {
         override fun equals(other: Any?): Boolean = when(other){
             is Some<*> -> value == other.value
@@ -31,6 +31,24 @@ sealed class KOption<out T>(): Iterable<T>, Foldable<T> {
         is None -> z
     }
 
+    override val hd: T
+        get() = when(this) {
+            is Some<T> -> this.value
+            is None -> throw IllegalArgumentException("None")
+        }
+
+    override val tl: KOption<T>
+        get() = when(this) {
+            is Some<T> -> None
+            is None -> throw IllegalArgumentException("None")
+        }
+
+    override val isEmpty: Boolean
+        get() = when(this) {
+            is Some<T> -> false
+            is None -> true
+        }
+
     fun <U:Any> map(function: (T) -> U): KOption<U> = when(this) {
         is Some<T> -> Some(function(this.value))
         is None -> None
@@ -46,10 +64,6 @@ sealed class KOption<out T>(): Iterable<T>, Foldable<T> {
         is None -> None
     }
 
-    fun isEmpty(): Boolean = when(this) {
-        is Some<T> -> false
-        is None -> true
-    }
 
     override fun toString(): String = when(this){
         is Some<*> -> "Some(${value})"

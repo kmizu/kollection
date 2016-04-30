@@ -49,7 +49,7 @@ class KOptionSpec(): Spek() {
                     assertEquals(x.flatMap{Some(it.toString())}, None)
                 }
                 it("isEmpty()") {
-                    assertEquals(x.isEmpty(), true)
+                    assertEquals(x.isEmpty, true)
                 }
                 it("foldLeft()") {
                     assertEquals(x.foldLeft("EMPTY"){x, y -> x + y}, "EMPTY")
