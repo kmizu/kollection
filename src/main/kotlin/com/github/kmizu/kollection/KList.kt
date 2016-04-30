@@ -1,6 +1,6 @@
 package com.github.kmizu.kollection
 
-sealed class KList<out T>() : Iterable<T>, KFoldable<T>, KImmutableLinearSequence<T> {
+sealed class KList<out T>() : KFoldable<T>, KImmutableLinearSequence<T> {
     companion object {
         fun <T> make(vararg elements: T): KList<T> = run {
             var result: KList<T> = Nil
@@ -115,14 +115,5 @@ sealed class KList<out T>() : Iterable<T>, KFoldable<T>, KImmutableLinearSequenc
     fun forAll(predicate: (T) -> Boolean): Boolean = this.all(predicate)
     fun exists(predicate: (T) -> Boolean): Boolean = this.any(predicate)
 
-    override fun iterator(): Iterator<T> = object : Iterator<T> {
-        private var elements: KList<T> = this@KList
-        override fun hasNext(): Boolean = !elements.isEmpty
-        override fun next(): T = run {
-            val value = elements.hd
-            elements = elements.tl
-            value
-        }
-    }
 }
 
