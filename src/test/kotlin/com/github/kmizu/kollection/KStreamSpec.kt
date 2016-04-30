@@ -13,8 +13,7 @@ class KStreamSpec(): Spek() {
                 }
             }
             on("an infinite stream describing natural numbers") {
-                fun fromInt(from: Int): KStream<Int> = from cons { fromInt(from + 1) }
-                val nat = fromInt(0)
+                val nat = KStream.from(0)
                 it("map{x -> x + 1}.take(3) produces KStream(1, 2, 3)") {
                     assertEquals(KList(1, 2, 3), nat.map { it + 1 }.take(3).toKList())
                 }

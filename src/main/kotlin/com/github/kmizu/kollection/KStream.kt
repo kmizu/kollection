@@ -3,6 +3,7 @@ package com.github.kmizu.kollection
 sealed class KStream<out T> {
     companion object {
         fun <T> forever(action: () -> T): KStream<T> = action() cons { forever(action) }
+        fun from(number: Int): KStream<Int> = number cons { from(number + 1 ) }
     }
     abstract val hd: T
     abstract val tl: KStream<T>
