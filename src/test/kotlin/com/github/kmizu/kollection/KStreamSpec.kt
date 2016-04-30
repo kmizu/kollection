@@ -7,19 +7,24 @@ import kotlin.test.assertFailsWith
 class KStreamSpec(): Spek() {
     init {
         given("KStream") {
+            on("KStream(1, 2, 3, 4)") {
+                it("is equal to 1 cons { 2 cons { 3 cons { 4 cons {KStreamNil}}}}") {
+                    assertEquals(1 cons { 2 cons { 3 cons { 4 cons {KStreamNil}}}}, KStream(1, 2, 3, 4))
+                }
+            }
             on("an infinite stream describing natural numbers") {
                 fun fromInt(from: Int): KStream<Int> = from cons { fromInt(from + 1) }
                 val nat = fromInt(0)
-                it("map{x -> x + 1}.take(3) produces KStream of (1, 2, 3)") {
+                it("map{x -> x + 1}.take(3) produces KStream(1, 2, 3)") {
                     assertEquals(KList(1, 2, 3), nat.map { it + 1 }.take(3).toKList())
                 }
-                it("map{x -> x + 1}.drop(3) produces KStream of (4, 5, 6)") {
+                it("map{x -> x + 1}.drop(3) produces KStream(4, 5, 6)") {
                     assertEquals(KList(4, 5, 6), nat.map { it + 1 }.drop(3).take(3).toKList())
                 }
-                it("takeWhile{x -> x < 6} produces KStream of (0, 1, 2, 3, 4, 5)") {
+                it("takeWhile{x -> x < 6} produces KStream(0, 1, 2, 3, 4, 5)") {
                     assertEquals(KList(0, 1, 2, 3, 4, 5), nat.takeWhile{it <  6}.toKList())
                 }
-                it("dropWhile{x -> x < 2} produces KStream of (2, 3, 4, 5, ...)") {
+                it("dropWhile{x -> x < 2} produces KStream(2, 3, 4, 5, ...)") {
                     assertEquals(KList(2, 3, 4, 5), nat.dropWhile {it < 2}.take(4).toKList())
                 }
                 it("KStream describing fibonacci can be defined") {
