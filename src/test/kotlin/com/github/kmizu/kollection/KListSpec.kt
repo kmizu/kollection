@@ -62,7 +62,11 @@ class KListSpec(): Spek() {
                 it("get()") {
                     assertEquals(5, klist[4])
                 }
+                it("flatten()") {
+                    assertEquals(KList(1, 2, 3, 4, 5, 6), KList(KList(1, 2), KList(3, 4), KList(5, 6)).flatten())
+                }
             }
+
             on("which is KNil") {
                 val knil: KList<Int> = KNil
                 it("reverse()") {
