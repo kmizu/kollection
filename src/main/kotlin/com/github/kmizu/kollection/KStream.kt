@@ -1,8 +1,8 @@
 package com.github.kmizu.kollection
 
-sealed abstract class KStream<out T> {
+sealed class KStream<out T> {
     companion object {
-        fun <T> forever(action: () -> T): KStream<T> = KStreamCons(action(), { forever(action) })
+        fun <T> forever(action: () -> T): KStream<T> = action() cons { forever(action) }
     }
     abstract val hd: T
     abstract val tl: KStream<T>
@@ -52,13 +52,13 @@ sealed abstract class KStream<out T> {
         override fun toString(): String = "KStreamNil"
     }
     infix fun <U> map(function: (T) -> U): KStream<U> = when(this) {
-        is KStreamCons<T> -> KStreamCons(function(this.hd), { this.tl.map(function) })
+        is KStreamCons<T> -> function(this.hd) cons { this.tl.map(function) }
         is KStreamNil -> KStreamNil
     }
     infix fun take(n: Int): KStream<T> = run {
         if (n <= 0 || isEmpty) KStreamNil
-        else if (n == 1) KStreamCons(this.hd, { KStreamNil})
-        else KStreamCons(this.hd, { this.tl take (n - 1) })
+        else if (n == 1) this.hd cons { KStreamNil}
+        else this.hd cons { this.tl take (n - 1) }
     }
     infix fun drop(n: Int): KStream<T> = run {
         if (n <= 0 || isEmpty) this
@@ -66,7 +66,7 @@ sealed abstract class KStream<out T> {
     }
     infix fun takeWhile(predicate: (T) -> Boolean): KStream<T> = run {
         if(isEmpty) KStreamNil
-        else if(predicate(this.hd)) KStreamCons(this.hd, { this.tl.takeWhile(predicate) })
+        else if(predicate(this.hd)) this.hd cons { this.tl.takeWhile(predicate) }
         else KStreamNil
     }
     infix fun dropWhile(predicate: (T) -> Boolean): KStream<T> = run {
@@ -75,7 +75,7 @@ sealed abstract class KStream<out T> {
     }
     infix fun <U> zip(another: KStream<U>): KStream<Pair<T, U>> = run {
         if(this.isEmpty || another.isEmpty) KStreamNil
-        else KStreamCons(Pair(this.hd, another.hd), { this.tl zip another.tl })
+        else Pair(this.hd, another.hd) cons { this.tl zip another.tl }
     }
     fun toKList(): KList<T> = run {
         fun loop(rest: KStream<T>, result: KList<T>): KList<T> = when(rest) {

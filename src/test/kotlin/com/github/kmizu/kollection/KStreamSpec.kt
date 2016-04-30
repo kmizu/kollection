@@ -8,7 +8,7 @@ class KStreamSpec(): Spek() {
     init {
         given("KStream") {
             on("an infinite stream describing natural numbers") {
-                fun fromInt(from: Int): KStream<Int> = KStreamCons(from, { fromInt(from + 1) })
+                fun fromInt(from: Int): KStream<Int> = from cons { fromInt(from + 1) }
                 val nat = fromInt(0)
                 it("map{x -> x + 1}.take(3) produces KStream of (1, 2, 3)") {
                     assertEquals(KList(1, 2, 3), nat.map { it + 1 }.take(3).toKList())
@@ -23,7 +23,7 @@ class KStreamSpec(): Spek() {
                     assertEquals(KList(2, 3, 4, 5), nat.dropWhile {it < 2}.take(4).toKList())
                 }
                 it("KStream describing fibonacci can be defined") {
-                    fun fib(): KStream<Int> = KStreamCons(0, { KStreamCons(1, { fib() zip fib().tl map {it.first + it.second} }) })
+                    fun fib(): KStream<Int> = 0 cons { 1 cons { fib() zip fib().tl map {it.first + it.second} } }
                     assertEquals(KList(0, 1, 1, 2, 3, 5, 8), fib().take(7).toKList())
                 }
                 it("KStream describing counter") {
