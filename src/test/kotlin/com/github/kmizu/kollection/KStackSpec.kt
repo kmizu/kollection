@@ -13,7 +13,7 @@ class KStackSpec(): Spek() {
                 }
             }
             on("performing top") {
-                val result = kstack.top()
+                val result = kstack.top
                 it("returns 5") {
                     assertEquals(5, result)
                 }
