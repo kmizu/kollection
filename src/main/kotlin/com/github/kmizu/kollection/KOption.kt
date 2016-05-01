@@ -69,22 +69,4 @@ sealed class KOption<out T>(): Iterable<T>, KFoldable<T>, KImmutableLinearSequen
         is Some<*> -> "Some(${value})"
         is None -> "None"
     }
-
-    override fun iterator(): Iterator<T> = object : Iterator<T> {
-        private var value: KOption<T> = this@KOption
-        override fun next(): T = when(value) {
-            is Some<T> ->
-                run {
-                    val result = value.get()
-                    value = None
-                    result
-                }
-            is None -> throw IllegalArgumentException("None")
-        }
-
-        override fun hasNext(): Boolean = when(value){
-            is Some<T> -> true
-            is None -> false
-        }
-    }
 }
