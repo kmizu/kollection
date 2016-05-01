@@ -49,12 +49,12 @@ sealed class KOption<out T>(): Iterable<T>, KFoldable<T>, KImmutableLinearSequen
             is None -> true
         }
 
-    fun <U:Any> map(function: (T) -> U): KOption<U> = when(this) {
+    fun <U> map(function: (T) -> U): KOption<U> = when(this) {
         is Some<T> -> Some(function(this.value))
         is None -> None
     }
 
-    fun <U:Any> flatMap(function: (T) -> KOption<U>): KOption<U> = when(this) {
+    fun <U> flatMap(function: (T) -> KOption<U>): KOption<U> = when(this) {
         is Some<T> -> function(this.value)
         is None -> None
     }
