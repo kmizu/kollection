@@ -19,6 +19,24 @@ class KLazySpec(): Spek() {
                     assertEquals(1, klazy.force())
                 }
             }
+            on("performing map") {
+                val result = klazy.map{it + 2}
+                it("!isForced") {
+                    assertEquals(false, result.isForced)
+                }
+                it("produces 3") {
+                    assertEquals(3, result.force())
+                }
+            }
+            on("performing flatMap") {
+                val result = klazy.flatMap{x -> KLazy{x + x}}
+                it("!isForced") {
+                    assertEquals(false, result.isForced)
+                }
+                it("produces 2") {
+                    assertEquals(2, result.force())
+                }
+            }
         }
     }
 }

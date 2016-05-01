@@ -21,6 +21,10 @@ class KLazy<T>(private val thunk: () -> T) {
         else -> false
     }
 
+    fun <U> map(function: (T) -> U): KLazy<U> = KLazy{ function(force()) }
+
+    fun <U> flatMap(function: (T) -> KLazy<U>): KLazy<U> = KLazy{ function(force()).force() }
+
     override fun hashCode(): Int = value.hashCode()
 
     override fun toString(): String = when(value){
