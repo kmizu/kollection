@@ -31,6 +31,9 @@ class KOptionSpec(): Spek() {
                 it("orElse()") {
                     assertEquals(Some("FOO"), x orElse Some("BAR"))
                 }
+                it("getOrElse") {
+                    assertEquals("FOO", x getOrElse { "BAR" })
+                }
             }
             on("which is None") {
                 val x: KOption<String> = None
@@ -59,6 +62,9 @@ class KOptionSpec(): Spek() {
                 }
                 it("orElse()") {
                     assertEquals(Some("BAR"), x orElse Some("BAR"))
+                }
+                it("getOrElse") {
+                    assertEquals("BAR", x getOrElse { "BAR" })
                 }
             }
         }
