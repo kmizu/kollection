@@ -6,64 +6,99 @@ import kotlin.test.assertFailsWith
 
 class KOptionSpec(): Spek() {
     init {
-        given("An Option") {
-            on("which is a Some(\"FOO\")") {
-                val x: KOption<String> = Some("FOO")
-                it("get()") {
-                    assertEquals(x.get(), "FOO")
+        given("An Option which is a Some") {
+            val x: KOption<String> = Some("FOO")
+            on("performing get") {
+                val result = x.get()
+                it("""returns "FOO"""") {
+                    assertEquals("FOO", result)
                 }
-                it("filter()") {
-                    assertEquals(x.filter{true}, Some("FOO"))
-                    assertEquals(x.filter{false}, None)
+            }
+            on("performing filter") {
+                it("""produces Some("FOO")""") {
+                    assertEquals(x.filter { true }, Some("FOO"))
                 }
-                it("map()"){
-                    assertEquals(x.map{it + "BAR"}, Some("FOOBAR"))
+                it("""produces None""") {
+                    assertEquals(x.filter { false }, None)
                 }
-                it("flatMap()"){
-                    assertEquals(x.flatMap{Some("BAR")}, Some("BAR"))
+            }
+            on("performing map") {
+                it("""produces Some("FOOBAR")""") {
+                    assertEquals(x.map { it + "BAR" }, Some("FOOBAR"))
                 }
-                it("foldLeft()") {
-                    assertEquals(x.foldLeft("BAR"){a, r -> r + a}, "FOOBAR")
+            }
+            on("performing flatMap") {
+                it("""produces Some("BAR")""") {
+                    assertEquals(x.flatMap { Some("BAR") }, Some("BAR"))
                 }
-                it("foldRight()") {
-                    assertEquals(x.foldRight("BAR"){l, a -> l + a}, "FOOBAR")
+            }
+            on("calculating the result of concatenation using foldLeft") {
+                it("""returns Some("FOOBAR")""") {
+                    assertEquals(x.foldLeft("BAR") { a, r -> r + a }, "FOOBAR")
                 }
-                it("orElse()") {
+            }
+            on("calculating the result of concatenation using foldRight") {
+                it("""returns Some("FOOBAR")""") {
+                    assertEquals(x.foldRight("BAR") { l, a -> l + a }, "FOOBAR")
+                }
+            }
+            on("performing orElse") {
+                it("""returns Some("FOO")""") {
                     assertEquals(Some("FOO"), x orElse Some("BAR"))
                 }
-                it("getOrElse") {
+            }
+            on("performing getOrElse") {
+                it("""returns "FOO"""") {
                     assertEquals("FOO", x getOrElse { "BAR" })
                 }
             }
-            on("which is None") {
-                val x: KOption<String> = None
-                it("get()") {
+        }
+        given("An Option which is None"){
+            val x: KOption<String> = None
+            on("performing get") {
+                it("throws Exception") {
                     assertFailsWith(IllegalArgumentException::class) {
                         x.get()
                     }
                 }
-                it("filter()") {
-                    assertEquals(x.filter{true}, None)
+            }
+            on("performing filter") {
+                it("produces None") {
+                    assertEquals(None, x.filter { true })
                 }
-                it("map()") {
-                    assertEquals(x.map{it.toString()}, None)
+            }
+            on("performing map") {
+                it("produces None") {
+                    assertEquals(None, x.map { it.toString() })
                 }
-                it("flatMap()"){
-                    assertEquals(x.flatMap{Some(it.toString())}, None)
+            }
+            on("performing flatMap") {
+                it("produces None") {
+                    assertEquals(None, x.flatMap { Some(it.toString()) })
                 }
-                it("isEmpty()") {
-                    assertEquals(x.isEmpty, true)
+            }
+            on("performing isEmpty") {
+                it("returns true") {
+                    assertEquals(true, x.isEmpty)
                 }
-                it("foldLeft()") {
-                    assertEquals(x.foldLeft("EMPTY"){x, y -> x + y}, "EMPTY")
+            }
+            on("performing foldLeft") {
+                it("""returns "EMPTY"""") {
+                    assertEquals("EMPTY", x.foldLeft("EMPTY") { x, y -> x + y })
                 }
-                it("foldRight") {
-                    assertEquals(x.foldRight("EMPTY"){x, y -> x + y}, "EMPTY")
+            }
+            on("performing foldRight") {
+                it("""returns "EMPTY"""") {
+                    assertEquals("EMPTY", x.foldRight("EMPTY") { x, y -> x + y })
                 }
-                it("orElse()") {
+            }
+            on("performing orElse") {
+                it("""produces Some("BAR")""") {
                     assertEquals(Some("BAR"), x orElse Some("BAR"))
                 }
-                it("getOrElse") {
+            }
+            on("performing getOrElse") {
+                it("""produces "BAR"""") {
                     assertEquals("BAR", x getOrElse { "BAR" })
                 }
             }
