@@ -15,7 +15,7 @@ class KLazySpec(): Spek() {
                 it("produces 1 for the first time") {
                     assertEquals(1, klazy.force())
                 }
-                it("also procuces 1 for the seoncd time") {
+                it("also produces 1 for the second time") {
                     assertEquals(1, klazy.force())
                 }
             }
