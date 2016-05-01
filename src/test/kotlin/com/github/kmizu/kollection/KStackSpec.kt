@@ -25,7 +25,7 @@ class KStackSpec(): Spek() {
                 }
             }
             on("performing isEmpty") {
-                val result = kstack.isEmpty()
+                val result = kstack.isEmpty
                 it("returns false") {
                     assertEquals(false, result)
                 }
