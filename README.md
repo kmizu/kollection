@@ -19,8 +19,12 @@ dependencies {
 
 ```
 
-## Example
-See [tests](https://github.com/kmizu/kollection/tree/master/src/test/kotlin/com/github/kmizu/kollection)
+## Examples
+
+* [KList](https://github.com/kmizu/kollection/blob/releases/0.1/src/test/kotlin/com/github/kmizu/kollection/KListSpec.kt)
+* [KStream](https://github.com/kmizu/kollection/blob/releases/0.1/src/test/kotlin/com/github/kmizu/kollection/KStreamSpec.kt)
+* [KOption](https://github.com/kmizu/kollection/blob/releases/0.1/src/test/kotlin/com/github/kmizu/kollection/KOptionSpec.kt)
+* [KStack](https://github.com/kmizu/kollection/blob/releases/0.1/src/test/kotlin/com/github/kmizu/kollection/KStackSpec.kt)
 
 ## Collections
 
@@ -42,5 +46,3 @@ val ones: KStream<Int> = 1 cons { ones }
 ### KOption
 
 ### KStack
-
-### KLazy
