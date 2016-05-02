@@ -7,7 +7,7 @@ import kotlin.test.assertFailsWith
 class KTreeSetSpec(): Spek() {
     init {
         given("A Set which consists of 1, 2, 3, 4, and 5") {
-            val set = KTreeSet(KTreeSet.INT_COMPARATOR, 1, 2, 3, 4, 5)
+            val set = KTreeSet(1, 2, 3, 4, 5)
             on("performing get function") {
                 it("returns true for 1") {
                     assertEquals(true, set[1])
