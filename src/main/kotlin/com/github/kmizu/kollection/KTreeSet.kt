@@ -6,8 +6,8 @@ class KTreeSet<T>(val comparator: (T, T) -> Int, val value: Tree<T> = Tree.Empty
         fun contains(e: T, t: Tree<T>): Boolean = when(t) {
             is Tree.Empty -> false
             is Tree.Node<T> -> {
-                if (comparator(e, t.element) < 0) contains(e, t.leftChild)
-                else if(comparator(t.element, e) < 0) contains(e, t.rightChild)
+                if (comparator(e, t.e) < 0) contains(e, t.l)
+                else if(comparator(t.e, e) < 0) contains(e, t.r)
                 else true
             }
         }
@@ -20,13 +20,13 @@ class KTreeSet<T>(val comparator: (T, T) -> Int, val value: Tree<T> = Tree.Empty
         fun insert(tree: Tree<T>): Node<T> = when(tree) {
             is Empty -> Node(Color.RED, Empty, element, Empty)
             is Node -> {
-                if(comparator(element, tree.element) < 0) balance(tree.color, insert(tree.leftChild), tree.element, tree.rightChild)
-                else if(comparator(tree.element, element) < 0) balance(tree.color, tree.leftChild, tree.element, insert(tree.rightChild))
+                if(comparator(element, tree.e) < 0) balance(tree.c, insert(tree.l), tree.e, tree.r)
+                else if(comparator(tree.e, element) < 0) balance(tree.c, tree.l, tree.e, insert(tree.r))
                 else tree
             }
         }
         val t = insert(value)
-        KTreeSet(comparator, Node(Color.BLACK, t.leftChild, t.element, t.rightChild))
+        KTreeSet(comparator, Node(Color.BLACK, t.l, t.e, t.r))
     }
 
     override val isEmpty: Boolean
