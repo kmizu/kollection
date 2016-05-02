@@ -103,5 +103,21 @@ class KOptionSpec(): Spek() {
                 }
             }
         }
+        given("A value which is null") {
+            val value: Int? = null
+            on("performing KOption") {
+                it("returns None") {
+                    assertEquals(None, KOption(value))
+                }
+            }
+        }
+        given("A Int value ") {
+            val value: Int? = 1
+            on("performing KOption") {
+                it("returns Some(1)") {
+                    assertEquals(Some(1), KOption(value))
+                }
+            }
+        }
     }
 }
