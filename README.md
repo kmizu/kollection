@@ -36,7 +36,7 @@ to insert a new element to front of the KList.  Note that it takes linear time t
 ### KStream
 
 KStream is like a KList seemingly.  But it differs from KList in that KStream's tail is lazily evaluated.
-Therefore, KStream can represent **an infinite stream*.  For example, `ones` is an infinite stream that consists
+Therefore, KStream can represent **an infinite stream**.  For example, `ones` is an infinite stream that consists
 of only 1 such as the following:
 
 ```kotlin
