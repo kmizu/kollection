@@ -151,7 +151,6 @@ class KListSpec(): Spek() {
                 }
             }
             on("performing flatMap") {
-                val list = KList(1, 2, 3)
                 it("produces Nil") {
                     assertEquals(Nil, knil.flatMap{ x -> KList(x, x)})
                 }
