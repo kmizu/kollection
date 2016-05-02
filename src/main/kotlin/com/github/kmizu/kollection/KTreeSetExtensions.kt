@@ -5,3 +5,10 @@ sealed class Tree<out T> {
     object Empty: Tree<Nothing>()
     class Node<T>(val c: Color, val l: Tree<T>, val e: T, val r: Tree<T>): Tree<T>()
 }
+fun <T> KTreeSet(comparator: (T, T) -> Int, vararg elements: T): KTreeSet<T> = run {
+    var set: KTreeSet<T> = KTreeSet(comparator, Tree.Empty)
+    for(e in elements) {
+        set = set + e
+    }
+    set
+}
