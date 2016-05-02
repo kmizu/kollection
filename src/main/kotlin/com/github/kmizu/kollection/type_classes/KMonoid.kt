@@ -43,9 +43,9 @@ interface KMonoid<T> {
             override fun mplus(a: Unit, b: Unit): Unit = Unit
         }
 
-        fun <A, B> PAIR(a: KMonoid<A>, b: KMonoid<B>): KMonoid<Pair<A, B>> = object : KMonoid<Pair<A, B>> {
-            override fun mzero(): Pair<A, B> = Pair(a.mzero(), b.mzero())
-            override fun mplus(x: Pair<A, B>, y: Pair<A, B>): Pair<A, B> = Pair(a.mplus(x.first, y.first), b.mplus(x.second, y.second))
+        fun <A, B> PAIR(m1: KMonoid<A>, m2: KMonoid<B>): KMonoid<Pair<A, B>> = object : KMonoid<Pair<A, B>> {
+            override fun mzero(): Pair<A, B> = Pair(m1.mzero(), m2.mzero())
+            override fun mplus(a: Pair<A, B>, b: Pair<A, B>): Pair<A, B> = Pair(m1.mplus(a.first, b.first), m2.mplus(a.second, b.second))
         }
 
         fun <A> KLIST(): KMonoid<KList<A>> = object : KMonoid<KList<A>> {
