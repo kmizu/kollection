@@ -21,3 +21,26 @@ dependencies {
 
 ## Example
 See [tests](https://github.com/kmizu/kollection/tree/master/src/test/kotlin/com/github/kmizu/kollection)
+
+## Collections
+
+### KList
+
+KList is a cons-based List.  It provides access to head by `hd` and access to tail by `hd`.  It takes only constant time
+to insert a new element to front of the KList.  Note that it takes linear time to append a new element to last of the KList
+
+### KStream
+
+KStream is like a KList seemingly.  But it differs from KList in that KStream's tail is lazily evaluated.
+Therefore, KStream can represent **an infinite stream*.  For example, `ones` is an infinite stream that consists
+of only 1 such as the following:
+
+```kotlin
+val ones: KStream<Int> = 1 cons { ones }
+```
+
+### KOption
+
+### KStack
+
+### KLazy
