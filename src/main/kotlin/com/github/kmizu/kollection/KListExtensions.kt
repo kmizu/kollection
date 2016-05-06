@@ -24,3 +24,4 @@ fun <T, U> KList<Pair<T, U>>.unzip(): Pair<KList<T>, KList<U>> = run {
     loop(this, KList.Nil, KList.Nil)
 }
 
+infix fun <T> KList<T>.contains(element: T): Boolean = this.exists {e -> e == element}

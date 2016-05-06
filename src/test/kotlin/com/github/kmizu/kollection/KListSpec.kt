@@ -23,6 +23,14 @@ class KListSpec(): Spek() {
                     assertEquals(klist, result)
                 }
             }
+            on("performing contains") {
+                it("returns true on 5"){
+                    assertEquals(true, klist.contains(5))
+                }
+                it("returns false on 6") {
+                    assertEquals(false, klist.contains(6))
+                }
+            }
             on("performing reverse") {
                 val result = klist.reverse()
                 it("produces KList(5, 4, 3, 2, 1)") {
