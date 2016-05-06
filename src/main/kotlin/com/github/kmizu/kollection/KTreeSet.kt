@@ -36,7 +36,7 @@ class KTreeSet<T>(val comparator: (T, T) -> Int, val value: Tree<T> = Tree.Empty
             Node(c, l, e, r)
     }
 
-    override fun plus(element: T): KTreeSet<T> = run {
+    override operator fun plus(element: T): KTreeSet<T> = run {
         fun insert(tree: Tree<T>): Node<T> = when(tree) {
             is Empty -> Node(Color.RED, Empty, element, Empty)
             is Node -> {
@@ -51,4 +51,19 @@ class KTreeSet<T>(val comparator: (T, T) -> Int, val value: Tree<T> = Tree.Empty
 
     override val isEmpty: Boolean
         get() = value is Tree.Empty
+
+    override fun iterator(): Iterator<T> = object: Iterator<T> {
+        private var list: KList<T> = listFrom(value)
+        fun listFrom(tree: Tree<T>): KList<T> = when(tree) {
+            is Empty -> KList.Nil
+            is Node -> listFrom(tree.l) concat KList(tree.e) concat listFrom(tree.r)
+        }
+        override fun hasNext(): Boolean = list is KList.Cons
+
+        override fun next(): T = run {
+            val v = list.hd
+            list = list.tl
+            v
+        }
+    }
 }
