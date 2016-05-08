@@ -66,4 +66,6 @@ class KTreeSet<T>(val comparator: (T, T) -> Int, val value: Tree<T> = Tree.Empty
             v
         }
     }
+
+    override fun remove(element: T): KTreeSet<T> = TODO("should be implemented")
 }
