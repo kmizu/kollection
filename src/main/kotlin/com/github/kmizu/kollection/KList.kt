@@ -152,6 +152,6 @@ sealed class KList<out T>() : KFoldable<T>, KImmutableLinearSequence<T> {
     }
     fun forAll(predicate: (T) -> Boolean): Boolean = this.all(predicate)
     fun exists(predicate: (T) -> Boolean): Boolean = this.any(predicate)
-
+    fun filter(predicate: (T) -> Boolean): KList<T> = this.foldLeft(Nil as KList<T>, {a, e -> if(predicate(e)) e cons a else a}).reverse()
 }
 
