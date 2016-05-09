@@ -1,5 +1,7 @@
 package com.github.kmizu.kollection
 
+import java.util.*
+
 sealed class KList<out T>() : KFoldable<T>, KImmutableLinearSequence<T> {
     companion object {
         fun <T> make(vararg elements: T): KList<T> = run {
@@ -67,6 +69,19 @@ sealed class KList<out T>() : KFoldable<T>, KImmutableLinearSequence<T> {
             is Cons<T> -> loop(rest.hd.cons(accumlator), rest.tl)
         }
         loop(Nil, this)
+    }
+    fun distinct(): KList<T> = run {
+        val seen = HashSet<T>()
+        var result: KList<T> = Nil
+        var current: KList<T> = this
+        while(current != Nil) {
+            if(!seen.contains(current.hd)){
+                result = current.hd cons result
+                seen.add(current.hd)
+            }
+            current = current.tl
+        }
+        result.reverse()
     }
     override fun <U> foldLeft(z: U, function: (U, T) -> U): U  = run {
         tailrec fun loop(list: KList<T>, accumulator: U): U = when(list) {

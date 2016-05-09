@@ -15,6 +15,15 @@ class KListSpec(): Spek() {
                 }
             }
         }
+        given("A KList of 1, 1, 2, 3, 3, 4, 5") {
+            val klist = KList(1, 1, 2, 3, 3, 4, 5)
+            on("performing distinct on the list") {
+                val result = klist.distinct()
+                it("produces KList(1, 2, 3, 4, 5)") {
+                    assertEquals(KList(1, 2, 3, 4, 5), result)
+                }
+            }
+        }
         given("A KList of 1, 2, 3, 4, 5") {
             val klist = KList(1, 2, 3, 4, 5)
             on("performing cons to each element") {
