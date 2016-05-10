@@ -2,7 +2,7 @@ package com.github.kmizu.kollection
 
 import java.util.*
 
-sealed class KList<out T>() : KFoldable<T>, KImmutableLinearSequence<T> {
+sealed class KList<out T>() : KFoldable<T>, KLinearSequence<T> {
     companion object {
         fun <T> make(vararg elements: T): KList<T> = run {
             var result: KList<T> = Nil

@@ -1,6 +1,6 @@
 package com.github.kmizu.kollection
 
-sealed class KStream<out T> : KFoldable<T>, KImmutableLinearSequence<T> {
+sealed class KStream<out T> : KFoldable<T>, KLinearSequence<T> {
     companion object {
         fun <T> forever(action: () -> T): KStream<T> = action() cons { forever(action) }
         fun from(number: Int): KStream<Int> = number cons { from(number + 1 ) }
