@@ -1,6 +1,6 @@
 package com.github.kmizu.kollection
 
-class KListSet<T>(initialElements: KList<T> = KList.Nil): KImmutableSet<T> {
+class KListSet<T>(initialElements: KList<T> = KList.Nil): KSet<T> {
     private var elements: KList<T> = initialElements
 
     override fun iterator(): Iterator<T> = object: Iterator<T> {

@@ -1,7 +1,7 @@
 package com.github.kmizu.kollection
 import com.github.kmizu.kollection.Tree.*
 
-class KTreeSet<T>(val comparator: (T, T) -> Int, val value: Tree<T> = Tree.Empty) : KImmutableSet<T> {
+class KTreeSet<T>(val comparator: (T, T) -> Int, val value: Tree<T> = Tree.Empty) : KSet<T> {
     companion object {
         val BYTE_COMPARATOR: (Byte, Byte) -> Int = {a, b -> if(a < b) -1 else if(a > b) 1 else 0}
         val SHORT_COMPARATOR: (Short, Short) -> Int = {a, b -> if(a < b) -1 else if(a > b) 1 else 0}
