@@ -67,5 +67,21 @@ class KTreeSet<T>(val comparator: (T, T) -> Int, val value: Tree<T> = Tree.Empty
         }
     }
 
-    override fun remove(element: T): KTreeSet<T> = TODO("should be implemented")
+    override fun remove(element: T): KTreeSet<T> = run {
+        fun findTarget(e: T, tree: Tree<T>): Node<T>? = when(tree) {
+            is Empty -> null
+            is Node<T> -> {
+                if(comparator(e, tree.e) < 0) findTarget(e, tree.l)
+                else if(comparator(tree.e, e) < 0) findTarget(e, tree.r)
+                else tree
+            }
+        }
+        val target = findTarget(element, value)
+        when(target) {
+            null -> KTreeSet(comparator, Empty)
+            else -> {
+                TODO()
+            }
+        }
+    }
 }
