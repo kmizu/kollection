@@ -4,7 +4,7 @@ class KListSet<T>(initialElements: KList<T> = KList.Nil): KSet<T> {
     private var elements: KList<T> = initialElements
 
     override fun iterator(): Iterator<T> = object: Iterator<T> {
-        private var list: KList<T> = elements
+        private var list: KList<T> = elements.reverse()
         override fun hasNext(): Boolean = list is KList.Cons
 
         override fun next(): T = run {

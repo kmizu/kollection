@@ -153,5 +153,12 @@ sealed class KList<out T>() : KFoldable<T>, KLinearSequence<T> {
     fun forAll(predicate: (T) -> Boolean): Boolean = this.all(predicate)
     fun exists(predicate: (T) -> Boolean): Boolean = this.any(predicate)
     fun filter(predicate: (T) -> Boolean): KList<T> = this.foldLeft(Nil as KList<T>, {a, e -> if(predicate(e)) e cons a else a}).reverse()
+    fun find(predicate: (T) -> Boolean): KOption<T> = run {
+        fun loop(list: KList<T>): KOption<T> = when(list) {
+            is Cons<T> -> if(predicate(list.hd)) KOption.Some(list.hd) else loop(list.tl)
+            is Nil -> KOption.None
+        }
+        loop(this)
+    }
 }
 

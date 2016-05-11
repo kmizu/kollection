@@ -64,7 +64,6 @@ sealed class KOption<out T>(): Iterable<T>, KFoldable<T>, KLinearSequence<T> {
         is None -> None
     }
 
-
     override fun toString(): String = when(this){
         is Some<*> -> "Some(${value})"
         is None -> "None"
