@@ -1,7 +1,7 @@
 buildscript {
   ext.kotlin_version = '1.0.2'
   ext.dokka_version = '0.9.8'
-  ext.spek_version = '1.0.9'
+  ext.spek_version = '1.0.0'
   repositories {
     mavenCentral()
     jcenter()
