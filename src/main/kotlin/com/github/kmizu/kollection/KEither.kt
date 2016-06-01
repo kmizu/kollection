@@ -11,4 +11,8 @@ sealed class KEither<L, R> {
         is Right -> function(this.value)
         is Left -> Left(this.value)
     }
+    fun <U> fold(fl: (L) -> U, fr: (R) -> U): U = when(this) {
+        is Right -> fr(this.value)
+        is Left -> fl(this.value)
+    }
 }
