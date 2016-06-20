@@ -1,5 +1,11 @@
 package com.github.kmizu.kollection
 
+
+/**
+ * This interface provides a linear sequence.
+ * A linear sequence guarantees constant time access of
+ * `head` nad `tail`.
+ */
 interface KLinearSequence<out T> : Iterable<T> {
     val hd: T
     val tl: KLinearSequence<T>
