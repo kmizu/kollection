@@ -26,7 +26,10 @@ dependencies {
 * [KOption](https://github.com/kmizu/kollection/blob/releases/0.4/src/test/kotlin/com/github/kmizu/kollection/KOptionSpec.kt)
 * [KStack](https://github.com/kmizu/kollection/blob/releases/0.4/src/test/kotlin/com/github/kmizu/kollection/KStackSpec.kt)
 * [KListSet](https://github.com/kmizu/kollection/blob/releases/0.4/src/test/kotlin/com/github/kmizu/kollection/KListSetSpec.kt)
+* [KTreeSet](https://github.com/kmizu/kollection/blob/releases/0.4/src/test/kotlin/com/github/kmizu/kollection/KTreeSetSpec.kt)
 * [KListMap](https://github.com/kmizu/kollection/blob/releases/0.4/src/test/kotlin/com/github/kmizu/kollection/KListMapSpec.kt)
+* [KTreeMap](https://github.com/kmizu/kollection/blob/releases/0.4/src/test/kotlin/com/github/kmizu/kollection/KTreeMapSpec.kt)
+* [KLazy](https://github.com/kmizu/kollection/blob/releases/0.4/src/test/kotlin/com/github/kmizu/kollection/KLazySpec.kt)
 * [KLazy](https://github.com/kmizu/kollection/blob/releases/0.4/src/test/kotlin/com/github/kmizu/kollection/KLazySpec.kt)
 
 ## Collections
