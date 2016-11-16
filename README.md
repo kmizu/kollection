@@ -14,20 +14,20 @@ Add the following line to build.gradle:
 
 ```groovy
 dependencies {
-  compile "com.github.kmizu:kollection:0.3"
+  compile "com.github.kmizu:kollection:0.4"
 }
 
 ```
 
 ## Examples
 
-* [KList](https://github.com/kmizu/kollection/blob/releases/0.3/src/test/kotlin/com/github/kmizu/kollection/KListSpec.kt)
-* [KStream](https://github.com/kmizu/kollection/blob/releases/0.3/src/test/kotlin/com/github/kmizu/kollection/KStreamSpec.kt)
-* [KOption](https://github.com/kmizu/kollection/blob/releases/0.3/src/test/kotlin/com/github/kmizu/kollection/KOptionSpec.kt)
-* [KStack](https://github.com/kmizu/kollection/blob/releases/0.3/src/test/kotlin/com/github/kmizu/kollection/KStackSpec.kt)
-* [KListSet](https://github.com/kmizu/kollection/blob/releases/0.3/src/test/kotlin/com/github/kmizu/kollection/KListSetSpec.kt)
-* [KListMap](https://github.com/kmizu/kollection/blob/releases/0.3/src/test/kotlin/com/github/kmizu/kollection/KListMapSpec.kt)
-* [KLazy](https://github.com/kmizu/kollection/blob/releases/0.3/src/test/kotlin/com/github/kmizu/kollection/KLazySpec.kt)
+* [KList](https://github.com/kmizu/kollection/blob/releases/0.4/src/test/kotlin/com/github/kmizu/kollection/KListSpec.kt)
+* [KStream](https://github.com/kmizu/kollection/blob/releases/0.4/src/test/kotlin/com/github/kmizu/kollection/KStreamSpec.kt)
+* [KOption](https://github.com/kmizu/kollection/blob/releases/0.4/src/test/kotlin/com/github/kmizu/kollection/KOptionSpec.kt)
+* [KStack](https://github.com/kmizu/kollection/blob/releases/0.4/src/test/kotlin/com/github/kmizu/kollection/KStackSpec.kt)
+* [KListSet](https://github.com/kmizu/kollection/blob/releases/0.4/src/test/kotlin/com/github/kmizu/kollection/KListSetSpec.kt)
+* [KListMap](https://github.com/kmizu/kollection/blob/releases/0.4/src/test/kotlin/com/github/kmizu/kollection/KListMapSpec.kt)
+* [KLazy](https://github.com/kmizu/kollection/blob/releases/0.4/src/test/kotlin/com/github/kmizu/kollection/KLazySpec.kt)
 
 ## Collections
 
@@ -61,3 +61,11 @@ val ones: KStream<Int> = 1 cons { ones }
 ### KListSet
 
 `KListMap` is `KList`-based immutable Set.
+
+### KTreeSet
+
+`KTreeSet` is `RedBlackTree`-based immutable Set.
+
+### KTreeMap
+
+`KTreeMap` is `RedBlackTree`-based immutable Map.
