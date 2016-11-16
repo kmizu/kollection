@@ -9,12 +9,24 @@ object RedBlackTree {
     fun isEmpty(tree: Tree<*, *>?): Boolean = tree === null
 
     fun <A> contains(tree: Tree<A, *>?, x: A, comparator: Comparator<A>): Boolean = lookup(tree, x, comparator) !== null
-    fun <A, B> get(tree: Tree<A, B>, x: A, comparator: Comparator<A>): B? = run {
-        val result = lookup(tree, x, comparator)
-        if(result == null) {
+    fun <A, B> get(tree: Tree<A, B>?, x: A, comparator: Comparator<A>): B? = run {
+        if(tree == null) {
             null
         } else {
-            tree.value
+            val result = lookup(tree, x, comparator)
+            if(result == null) {
+                null
+            } else {
+                result.value
+            }
+        }
+    }
+
+    fun <A, B> sizeOf(tree: Tree<A, B>?): Int = run {
+        if(tree === null) {
+            0
+        } else {
+            sizeOf(tree.left) + 1 + sizeOf(tree.right)
         }
     }
 
