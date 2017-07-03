@@ -1,7 +1,7 @@
 buildscript {
-  ext.kotlin_version = '1.0.3'
-  ext.dokka_version = '0.9.9'
-  ext.spek_version = '1.0.9'
+  ext.kotlin_version = '1.1.2'
+  ext.dokka_version = '0.9.15'
+  ext.spek_version = '1.1'
   repositories {
     mavenCentral()
     jcenter()
@@ -31,6 +31,12 @@ project(":") {
     required { isReleaseVersion && gradle.taskGraph.hasTask("uploadArchives") }
     sign configurations.archives
   }
+
+  dokka {
+    outputFormat = 'html'
+    outputDirectory = "$buildDir/javadoc"
+  }
+
   repositories {
     mavenCentral()
     maven {
@@ -46,19 +52,14 @@ project(":") {
   }
 }
 
-task dokkaJavadoc(type: org.jetbrains.dokka.gradle.DokkaTask) {
-  outputFormat = 'html'
-  outputDirectory = "$buildDir/javadoc"
-}
-
 task sourcesJar(type: Jar, dependsOn: classes) {
   classifier = 'sources'
   from sourceSets.main.allSource
 }
 
-task javadocJar(type: Jar, dependsOn: dokkaJavadoc) {
+task javadocJar(type: Jar, dependsOn: dokka) {
   classifier = 'javadoc'
-  from dokkaJavadoc.outputDirectory
+  from dokka.outputDirectory
 }
 
 artifacts {
