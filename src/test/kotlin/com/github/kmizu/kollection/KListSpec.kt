@@ -3,6 +3,7 @@ import org.jetbrains.spek.api.Spek
 import kotlin.test.assertEquals
 import com.github.kmizu.kollection.KList.*
 import com.github.kmizu.kollection.type_classes.KMonoid
+import org.jetbrains.spek.api.dsl.*
 
 class KListSpec(): Spek({
     given("A nested KList") {

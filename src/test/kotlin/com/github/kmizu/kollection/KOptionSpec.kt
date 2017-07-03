@@ -2,6 +2,7 @@ package com.github.kmizu.kollection
 import org.jetbrains.spek.api.Spek
 import kotlin.test.assertEquals
 import com.github.kmizu.kollection.KOption.*
+import org.jetbrains.spek.api.dsl.*
 import kotlin.test.assertFailsWith
 
 class KOptionSpec(): Spek({

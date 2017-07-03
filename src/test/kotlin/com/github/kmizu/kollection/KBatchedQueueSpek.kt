@@ -1,11 +1,12 @@
 package com.github.kmizu.kollection
 import org.jetbrains.spek.api.Spek
-import kotlin.test.assertEquals
 import com.github.kmizu.kollection.*
 import com.github.kmizu.kollection.KEither.*
 import com.github.kmizu.kollection.type_classes.KMonoid
+import kotlin.test.assertEquals
+import org.jetbrains.spek.api.dsl.*
 
-class KBatchedQueueSpek(): Spek({
+object KBatchedQueueSpek: Spek({
     given("A BatchedQueue consists of 1, 2, 3, 4, 5") {
         val q = KBatchedQueue(1, 2, 3, 4, 5)
         on("performing enqueue 6") {

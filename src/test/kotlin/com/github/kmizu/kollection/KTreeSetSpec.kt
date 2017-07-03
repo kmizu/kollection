@@ -3,6 +3,7 @@ import org.jetbrains.spek.api.Spek
 import kotlin.test.assertEquals
 
 import com.github.kmizu.kollection.KTreeSet
+import org.jetbrains.spek.api.dsl.*
 
 class KTreeSetSpec(): Spek({
     given("A Set which consists of 1, 2, 3, 4, and 5") {

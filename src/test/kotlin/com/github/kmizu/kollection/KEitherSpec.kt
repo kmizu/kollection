@@ -4,6 +4,7 @@ import kotlin.test.assertEquals
 import com.github.kmizu.kollection.*
 import com.github.kmizu.kollection.KEither.*
 import com.github.kmizu.kollection.type_classes.KMonoid
+import org.jetbrains.spek.api.dsl.*
 
 class KEitherSpec(): Spek({
     given("A Left 1") {

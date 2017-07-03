@@ -2,6 +2,7 @@ package com.github.kmizu.kollection
 import org.jetbrains.spek.api.Spek
 import kotlin.test.assertEquals
 import com.github.kmizu.kollection.KOption.*
+import org.jetbrains.spek.api.dsl.*
 
 class KTreeMapSpec(): Spek({
     given("A Map which consists of 1 to 2, 3 to 4, and 5 to 6") {

@@ -1,5 +1,6 @@
 package com.github.kmizu.kollection
 import org.jetbrains.spek.api.Spek
+import org.jetbrains.spek.api.dsl.*
 import kotlin.test.assertEquals
 
 class KLazySpec(): Spek({

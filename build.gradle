@@ -1,15 +1,19 @@
 buildscript {
   ext.kotlin_version = '1.1.2'
   ext.dokka_version = '0.9.15'
-  ext.spek_version = '1.1'
+  ext.spek_version = '1.1.0'
   repositories {
     mavenCentral()
     jcenter()
     maven {
       url "http://repository.jetbrains.com/all"
     }
+    maven {
+      url "http://dl.bintray.com/jetbrains/spek"
+    }
   }
   dependencies {
+    classpath "org.junit.platform:junit-platform-gradle-plugin:1.0.0-M4"
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     classpath "org.jetbrains.dokka:dokka-gradle-plugin:$dokka_version"
   }
@@ -17,6 +21,7 @@ buildscript {
 
 apply plugin: "org.jetbrains.dokka"
 apply plugin: 'kotlin'
+apply plugin: "org.junit.platform.gradle.plugin"
 
 project(":") {
   apply plugin: "application"
@@ -48,7 +53,10 @@ project(":") {
   }
   dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    testCompile "org.jetbrains.spek:spek:$spek_version"
+    compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+    testCompile "org.jetbrains.kotlin:kotlin-test:1.1.2"
+    testCompile "org.jetbrains.spek:spek-api:1.1.2"
+    testRuntime "org.jetbrains.spek:spek-junit-platform-engine:1.1.2"
   }
 }
 
@@ -68,7 +76,7 @@ artifacts {
 }
 
 task wrapper(type: Wrapper) {
-  gradleVersion = '3.2'
+  gradleVersion = '4.0'
 }
 
 uploadArchives {
@@ -121,6 +129,6 @@ dependencies {
   compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 }
 sourceSets {
-  main.java.srcDirs += 'src/main/kotlin'
+  //main.java.srcDirs += 'src/main/kotlin'
 }
 
