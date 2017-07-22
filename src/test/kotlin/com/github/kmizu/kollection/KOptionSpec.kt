@@ -84,12 +84,12 @@ class KOptionSpec(): Spek({
         }
         on("performing foldLeft") {
             it("""returns "EMPTY"""") {
-                assertEquals("EMPTY", x.foldLeft("EMPTY") { x, y -> x + y })
+                assertEquals("EMPTY", x.foldLeft("EMPTY") { a, y -> a + y })
             }
         }
         on("performing foldRight") {
             it("""returns "EMPTY"""") {
-                assertEquals("EMPTY", x.foldRight("EMPTY") { x, y -> x + y })
+                assertEquals("EMPTY", x.foldRight("EMPTY") { a, y -> a + y })
             }
         }
         on("performing orElse") {

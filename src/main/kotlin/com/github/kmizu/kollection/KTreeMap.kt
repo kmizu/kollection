@@ -2,8 +2,6 @@ package com.github.kmizu.kollection
 
 import com.github.kmizu.kollection.RedBlackTree as RB
 import com.github.kmizu.kollection.RedBlackTree.Tree
-import com.github.kmizu.kollection.RedBlackTree.Tree.RedTree
-import com.github.kmizu.kollection.RedBlackTree.Tree.BlackTree
 import java.util.*
 
 class KTreeMap<A:Any, B:Any>(val tree: Tree<A, B>?, val comparator: Comparator<A>): KMap<A, B> {
@@ -37,9 +35,9 @@ class KTreeMap<A:Any, B:Any>(val tree: Tree<A, B>?, val comparator: Comparator<A
         newMap(RB.update(tree, key, value, false, comparator))
     }
 
-    override fun remove(element:A): KTreeMap<A, B> = run {
-        if (!RB.contains(tree, element, comparator)) this
-        else newMap(RB.delete(tree, element, comparator))
+    override fun remove(key: A): KTreeMap<A, B> = run {
+        if (!RB.contains(tree, key, comparator)) this
+        else newMap(RB.delete(tree, key, comparator))
     }
 
     override fun get(key: A): KOption<B> = run {

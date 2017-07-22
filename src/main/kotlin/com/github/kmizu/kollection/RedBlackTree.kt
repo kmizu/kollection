@@ -332,30 +332,30 @@ object RedBlackTree {
         }
 
         fun unzipBoth(
-            left: Tree<A, B>?,
-            right: Tree<A, B>?,
-            leftZipper: KList<Tree<A, B>>,
-            rightZipper: KList<Tree<A, B>>,
-            smallerDepth: Int
+                lhs: Tree<A, B>?,
+                rhs: Tree<A, B>?,
+                lhsZipper: KList<Tree<A, B>>,
+                rhsZipper: KList<Tree<A, B>>,
+                smallerDepth: Int
         ): Result<A, B> = run {
-            if (left is BlackTree<A, B> && right is BlackTree<A, B>) {
-                unzipBoth(left.right, right.left, left cons leftZipper, right cons rightZipper, smallerDepth + 1)
-            } else if (left is RedTree<A, B> && right is RedTree<A, B>) {
-                unzipBoth(left.right, right.left, left cons leftZipper, right cons rightZipper, smallerDepth)
-            } else if (right is RedTree<A, B>) {
-                unzipBoth(left, right.left, leftZipper, right cons rightZipper, smallerDepth)
-            } else if (left is RedTree<A, B>) {
-                unzipBoth(left.right, right, left cons leftZipper, rightZipper, smallerDepth)
-            } else if (left === null && right === null) {
+            if (lhs is BlackTree<A, B> && rhs is BlackTree<A, B>) {
+                unzipBoth(lhs.right, rhs.left, lhs cons lhsZipper, rhs cons rhsZipper, smallerDepth + 1)
+            } else if (lhs is RedTree<A, B> && rhs is RedTree<A, B>) {
+                unzipBoth(lhs.right, rhs.left, lhs cons lhsZipper, rhs cons rhsZipper, smallerDepth)
+            } else if (rhs is RedTree<A, B>) {
+                unzipBoth(lhs, rhs.left, lhsZipper, rhs cons rhsZipper, smallerDepth)
+            } else if (lhs is RedTree<A, B>) {
+                unzipBoth(lhs.right, rhs, lhs cons lhsZipper, rhsZipper, smallerDepth)
+            } else if (lhs === null && rhs === null) {
                 Result(KList.Nil, true, false, smallerDepth)
-            } else if (left === null && right is BlackTree<A, B>) {
+            } else if (lhs === null && rhs is BlackTree<A, B>) {
                 val leftMost = true
-                Result(unzip(right cons rightZipper, leftMost), false, leftMost, smallerDepth)
-            } else if (left is BlackTree<A, B> && right === null) {
+                Result(unzip(rhs cons rhsZipper, leftMost), false, leftMost, smallerDepth)
+            } else if (lhs is BlackTree<A, B> && rhs === null) {
                 val leftMost = false
-                Result(unzip(left cons leftZipper, leftMost), false, leftMost, smallerDepth)
+                Result(unzip(lhs cons lhsZipper, leftMost), false, leftMost, smallerDepth)
             } else {
-                throw Exception("unmatched trees in unzip: $left, $right")
+                throw Exception("unmatched trees in unzip: $lhs, $rhs")
             }
         }
         unzipBoth(left, right, KList.Nil, KList.Nil, 0)
@@ -387,11 +387,11 @@ object RedBlackTree {
             } else {
                 RedTree(tree.key, tree.value, zipFrom.hd, blkNewRight)
             }
-            val zippedTree = zipFrom.tl.foldLeft(union) { tree, node ->
+            val zippedTree = zipFrom.tl.foldLeft(union) { acc, node ->
                 if (leftMost)
-                    balanceLeft(isBlackTree(node), node.key, node.value, tree, node.right)
+                    balanceLeft(isBlackTree(node), node.key, node.value, acc, node.right)
                 else
-                    balanceRight(isBlackTree(node), node.key, node.value, node.left, tree)
+                    balanceRight(isBlackTree(node), node.key, node.value, node.left, acc)
             }
             zippedTree
         }
